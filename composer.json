@@ -1,7 +1,7 @@
 {
     "name": "makallio85/cake-yaml",
-    "description": "cake-yaml plugin for CakePHP",
-    "type": "cakephp-plugin",
+    "description": "Yaml routes for CakePHP3",
+    "type": "library",
     "require": {
         "php": ">=5.4.16",
         "cakephp/cakephp": "~3.0"
