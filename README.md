@@ -1,3 +1,5 @@
+Not stable version. Do not use yet :D
+
 ```composer require makallio85/cake-yaml "dev-master"```
 
 Replace all content in ```config/routes.php``` with ```CakeYaml\Generator::getInstance()->run();```
