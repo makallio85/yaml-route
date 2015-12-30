@@ -1,6 +1,0 @@
-cake_yaml_routes:
-  path: /cake_yaml
-    config:
-      plugin: CakeYaml
-      controller: Routes
-      action: index

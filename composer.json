@@ -10,12 +10,12 @@
     },
     "autoload": {
         "psr-4": {
-            "makallio85\\CakeYaml\\": "src"
+            "CakeYaml\\": "src/CakeYaml/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "makallio85\\CakeYaml\\Test\\": "tests"
+            "CakeYaml\\Test\\": "test/CakeYaml/Test/"
         }
     },
     "minimum-stability": "dev"

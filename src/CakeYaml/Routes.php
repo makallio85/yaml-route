@@ -1,6 +1,6 @@
 <?php
 
-namespace makallio85\CakeYaml;
+namespace CakeYaml;
 
 use Cake\Core\Plugin;
 
