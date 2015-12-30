@@ -3,7 +3,7 @@
     "description": "Yaml routes for CakePHP3",
     "type": "library",
     "require": {
-        "php": ">=5.4.16",
+        "php": ">=5.4.16"
     },
     "require-dev": {
         "phpunit/phpunit": "*"
