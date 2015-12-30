@@ -4,20 +4,18 @@
     "type": "library",
     "require": {
         "php": ">=5.4.16",
-        "cakephp/cakephp": "~3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "*"
     },
     "autoload": {
         "psr-4": {
-            "CakeYaml\\": "src"
+            "makallio85\\CakeYaml\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "CakeYaml\\Test\\": "tests",
-            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+            "makallio85\\CakeYaml\\Test\\": "tests",
         }
     },
     "minimum-stability": "dev"
