@@ -48,4 +48,15 @@ class Plugin
             }
         }
     }
+
+    public static function exists($plugin)
+    {
+        foreach (self::getLoaded() as $loaded) {
+            if ($plugin === $loaded['name']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
