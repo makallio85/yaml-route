@@ -50,7 +50,7 @@ class Generator
      *
      * @return \CakeYaml\Generator|null
      */
-    private static function _getInstance()
+    public static function getInstance()
     {
         if (is_null(self::$_instance)) {
             self::$_instance = new Generator();
@@ -108,10 +108,11 @@ class Generator
     {
         self::_loadProjectConfig();
         $configs = self::_getRouteConfigs();
-
+        debug($configs);
         foreach ($configs as $config) {
             if (isset($config['route'])) {
                 foreach ($config['route'] as $name => $route) {
+
                     self::_newRoute($name, $route);
                 }
             }
@@ -127,17 +128,19 @@ class Generator
      */
     private static function _newRoute($name, $route)
     {
-        if (!is_array($route['config'])) {
-            $route['config'] = self::_loadRouteConfig($route['config']);
-        }
-        if (isset($route['config']['plugin']) && Plugin::isLoaded($route['config']['plugin'])) {
-            $method = 'plugin';
-            $path = $route['config']['plugin'];
-            $options = ['path' => $route['path']];
-        } else {
-            $method = 'scope';
-            $path = '/';
-            $options = [];
+        $method = 'scope';
+        $path = '/';
+        $options = [];
+
+        if (isset($route['config'])) {
+            if (!is_array($route['config'])) {
+                $route['config'] = self::_loadRouteConfig($route['config']);
+            }
+            if (isset($route['config']['plugin']) && Plugin::isLoaded($route['config']['plugin'])) {
+                $method = 'plugin';
+                $path = $route['config']['plugin'];
+                $options = ['path' => $route['path']];
+            }
         }
 
         // Set default route class
@@ -154,7 +157,7 @@ class Generator
 
         Router::$method(
             $path, $options, function ($routes) use ($route, $name) {
-            if (isset($route['config']['controller'])) {
+            if (isset($route['config']) && isset($route['config']['controller'])) {
                 $opts = [];
                 foreach ($route['config'] as $key => $item) {
                     if (!in_array($key, ['routes', 'extensions', 'plugin', 'default_route_class'])) {
@@ -169,7 +172,7 @@ class Generator
                     self::_addToDump("\t" . '$routes->connect(\'/\', ' . self::arrayToDisplay($opts) . ', [\'_name\' => \'' . $name . '\']);');
                 }
             }
-            if (isset($route['config']['routes'])) {
+            if (isset($route['config']) && isset($route['config']['routes'])) {
                 foreach ($route['config']['routes'] as $key => $x) {
                     $opts = [];
                     foreach ($x as $k => $item) {
@@ -186,7 +189,7 @@ class Generator
                     }
                 }
             }
-            if (isset($route['config']['fallbacks'])) {
+            if (isset($route['config']) && isset($route['config']['fallbacks'])) {
                 $fallbacks = $route['config']['fallbacks'];
             } else {
                 $fallbacks = 'DashedRoute';
