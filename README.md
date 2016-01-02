@@ -1,7 +1,7 @@
-Cake Yaml routing library
+cake-yaml routing
 -------------------------
 
-Cake-yaml provides possibility to configure CakePHP 3 routes with yaml files. This is basically just wrapper for CakePHP core routing that parses yaml files and makes proper calls to Cake\Core\Router.
+cake-yaml provides possibility to configure CakePHP 3 routes with simple yaml files. This is basically just wrapper for CakePHP core routing that parses yaml files and makes proper calls to Cake\Core\Router.
 
 ### Installation ###
 
