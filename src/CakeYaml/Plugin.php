@@ -45,7 +45,7 @@ class Plugin
      *
      * @return \CakeYaml\Plugin|null
      */
-    private static function _getInstance()
+    public static function getInstance()
     {
         if (is_null(self::$_instance)) {
             self::$_instance = new Plugin();
@@ -100,7 +100,7 @@ class Plugin
     }
 
     /**
-     * Not implemented yet
+     * Load all plugins at once
      *
      * @param $options
      */

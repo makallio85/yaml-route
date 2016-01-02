@@ -29,6 +29,23 @@ class Generator
     private static $_instance = null;
 
     /**
+     * @var
+     */
+    private static $_dump;
+
+    /**
+     * @var bool
+     */
+    private static $_debug = false;
+
+    /**
+     * @var bool
+     */
+    private static $_executed = [
+        '\Cake\Core\Plugin::routes()' => false,
+    ];
+
+    /**
      * Get instance
      *
      * @return \CakeYaml\Generator|null
@@ -99,7 +116,7 @@ class Generator
                 }
             }
         }
-        //debug(Router::routes()); die();
+        self::_pluginRoutes();
     }
 
     /**
@@ -119,7 +136,7 @@ class Generator
             $options = ['path' => $route['path']];
         } else {
             $method = 'scope';
-            $path = '';
+            $path = '/';
             $options = [];
         }
 
@@ -129,6 +146,12 @@ class Generator
                 Router::defaultRouteClass($route['config']['default_route_class']);
             }
         }
+
+        // Debugging
+        if (self::$_debug) {
+            self::_addToDump("\\Cake\\Routing\\Router::$method('$path', " . self::arrayToDisplay($options) . ", function (" . '$routes' . ") {");
+        }
+
         Router::$method(
             $path, $options, function ($routes) use ($route, $name) {
             if (isset($route['config']['controller'])) {
@@ -140,9 +163,13 @@ class Generator
                 }
                 /* @var \Cake\Routing\Router $routes */
                 $routes->connect('/', $opts, ['_name' => $name]);
+
+                // Debugging
+                if (self::$_debug) {
+                    self::_addToDump("\t" . '$routes->connect(\'/\', ' . self::arrayToDisplay($opts) . ', [\'_name\' => \'' . $name . '\']);');
+                }
             }
             if (isset($route['config']['routes'])) {
-                //debug($route); die();
                 foreach ($route['config']['routes'] as $key => $x) {
                     $opts = [];
                     foreach ($x as $k => $item) {
@@ -152,6 +179,11 @@ class Generator
                     }
                     /* @var \Cake\Routing\Router $routes */
                     $routes->connect('/' . $key, $opts, ['_name' => $key]);
+
+                    // Debugging
+                    if (self::$_debug) {
+                        self::_addToDump("\t" . '$routes->connect(\'/' . $key . '\', ' . self::arrayToDisplay($opts) . ', [\'_name\' => \'' . $key . '\']);');
+                    }
                 }
             }
             if (isset($route['config']['fallbacks'])) {
@@ -161,9 +193,86 @@ class Generator
             }
             /* @var \Cake\Routing\RouteBuilder $routes */
             $routes->fallbacks($fallbacks);
+
+            // Debugging
+            if (self::$_debug) {
+                self::_addToDump("\t" . '$routes->fallbacks(\'' . $fallbacks . '\');');
+            }
         }
         );
-        CakePlugin::routes();
+
+        // Debugging
+        if (self::$_debug) {
+            self::_addToDump('});' . "\n");
+        }
+    }
+
+    /**
+     * Transfer array into string in format ['key' => 'value']
+     *
+     * @param $array
+     *
+     * @return string
+     */
+    private static function arrayToDisplay($array)
+    {
+        return '[' . implode(
+            ', ', array_map(
+                function ($v, $k) {
+                    return sprintf("'%s' => '%s'", $k, $v);
+                }, $array, array_keys($array)
+            )
+        ) . ']';
+    }
+
+    /**
+     * Run Plugin::routes()
+     */
+    private static function _pluginRoutes()
+    {
+        if (!self::_isExecuted('\Cake\Core\Plugin::routes()')) {
+            CakePlugin::routes();
+            self::setExecuted('\Cake\Core\Plugin::routes()');
+
+            // Debugging
+            if (self::$_debug) {
+                self::_addToDump('\Cake\Core\Plugin::routes();' . "\n");
+            }
+        }
+    }
+
+    /**
+     * @param $name
+     */
+    private static function setExecuted($name)
+    {
+        self::$_executed[$name] = true;
+    }
+
+    /**
+     * @param $name
+     *
+     * @return mixed
+     */
+    private static function _isExecuted($name)
+    {
+        return self::$_executed[$name];
+    }
+
+    /**
+     * @param $string
+     */
+    private static function _addToDump($string)
+    {
+        self::$_dump .= $string . "\n";
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getDump()
+    {
+        return trim(self::$_dump);
     }
 
     /**
@@ -188,11 +297,13 @@ class Generator
 
     /**
      * Generate routes based on yml files
+     *
+     * @param $debug
      */
-    public static function run()
+    public static function run($debug = false)
     {
-        $instance = self::_getInstance();
-        $instance::_setRouteConfigs();
-        $instance::_generateRoutes();
+        self::$_debug = $debug;
+        self::_setRouteConfigs();
+        self::_generateRoutes();
     }
 }
