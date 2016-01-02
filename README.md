@@ -19,6 +19,7 @@ Every route are automatically named with its key. Root route should be named as 
 Route can contain path and config keys. Path is always string but config can be string that references to another yaml file that contains configuration. Syntax for external path is "PluginName.RouteFileName". All route configurations should be placed in config folder of project or plugin.
 
 Possible keys for config are listed below:
+
 | Key        | Type   | Description         | Notes               |
 |:-----------|:-------|:--------------------|:--------------------|
 | controller | string | Route controller    |                     |
