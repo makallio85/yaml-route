@@ -2,6 +2,7 @@
 
 namespace CakeYaml;
 
+use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Plugin as CakePlugin;
 use Symfony\Component\Yaml\Yaml;
@@ -60,9 +61,7 @@ class Plugin
      */
     public static function getLoaded()
     {
-        $instance = self::_getInstance();
-
-        return $instance::$_loaded;
+        return self::$_loaded;
     }
 
     /**
@@ -75,7 +74,6 @@ class Plugin
      */
     public static function load($plugins, $options)
     {
-        $instance = self::_getInstance();
         $routes = isset($options['routes']) && $options['routes'] === true ? true : false;
 
         $options['routes'] = false;
@@ -86,8 +84,9 @@ class Plugin
             if (!is_array($plugins)) {
                 $plugins = [$plugins];
             }
+
             foreach ($plugins as $plugin) {
-                if ($instance::isLoaded($plugin)) {
+                if (self::isLoaded($plugin)) {
                     throw new CakeYamlException("Plugin $plugin is loaded already and should not be loaded twice.");
                 }
                 $path = $pluginPaths[$plugin] . DS . 'config' . DS . 'routes.yml';
@@ -95,7 +94,7 @@ class Plugin
                     throw new CakeYamlException("Yaml route configuration file not found in path $path.");
                 }
                 $route = Yaml::parse(file_get_contents($path));
-                $instance::_addLoaded(['name' => $plugin, 'route' => $route]);
+                self::_addLoaded(['name' => $plugin, 'route' => $route]);
             }
         }
     }
@@ -107,7 +106,33 @@ class Plugin
      */
     public static function loadAll($options)
     {
-        $instance = self::_getInstance();
+        $plugins = [];
+        foreach (App::path('Plugin') as $path) {
+            if (!is_dir($path)) {
+                continue;
+            }
+            $dir = new \DirectoryIterator($path);
+            foreach ($dir as $p) {
+                if ($p->isDir() && !$p->isDot()) {
+                    $plugins[] = $p->getBasename();
+                }
+            }
+        }
+        if (Configure::check('plugins')) {
+            $plugins = array_merge($plugins, array_keys(Configure::read('plugins')));
+            $plugins = array_unique($plugins);
+        }
+
+        foreach ($plugins as $p) {
+            $opts = isset($options[$p]) ? $options[$p] : null;
+            if ($opts === null && isset($options[0])) {
+                $opts = $options[0];
+            }
+            if (Plugin::isLoaded($p)) {
+                continue;
+            }
+            self::load($p, (array)$opts);
+        }
     }
 
     /**
@@ -119,8 +144,7 @@ class Plugin
      */
     public static function isLoaded($plugin)
     {
-        $instance = self::_getInstance();
-        foreach ($instance::getLoaded() as $loaded) {
+        foreach (self::getLoaded() as $loaded) {
             if ($plugin === $loaded['name']) {
                 return true;
             }
