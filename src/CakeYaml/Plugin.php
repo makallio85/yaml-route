@@ -75,8 +75,8 @@ class Plugin
     public static function load($plugins, $options)
     {
         $routes = isset($options['routes']) && $options['routes'] === true ? true : false;
-
         $options['routes'] = false;
+
         CakePlugin::load($plugins, $options);
 
         if ($routes) {
