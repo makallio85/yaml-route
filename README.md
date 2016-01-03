@@ -2,7 +2,7 @@ Cake-yaml
 ---------
 [![Latest Stable Version](https://poser.pugx.org/makallio85/cake-yaml/v/stable)](https://packagist.org/packages/makallio85/cake-yaml) [![Total Downloads](https://poser.pugx.org/makallio85/cake-yaml/downloads)](https://packagist.org/packages/makallio85/cake-yaml) [![Latest Unstable Version](https://poser.pugx.org/makallio85/cake-yaml/v/unstable)](https://packagist.org/packages/makallio85/cake-yaml) [![License](https://poser.pugx.org/makallio85/cake-yaml/license)](https://packagist.org/packages/makallio85/cake-yaml) [![Build Status](https://travis-ci.org/makallio85/cake-yaml.svg?branch=master)](https://travis-ci.org/makallio85/cake-yaml)
 
-Cake-yaml provides possibility to configure CakePHP 3 routes with simple yaml files. This is basically just wrapper for CakePHP core routing that parses yaml files and makes proper calls to Cake\Core\Router.
+Cake-yaml provides possibility to configure CakePHP 3 routes with simple YAML files. This is basically just wrapper for CakePHP core routing that parses YAML files and makes proper calls to ```Cake\Core\Router```.
 
 Main goal is not to implement all fancy features that CakePHP 3 routing provides, only those ones that are really needed. Of course this is relative to developer, so feel free to fork and commit your own code.
 
@@ -19,7 +19,7 @@ Main goal is not to implement all fancy features that CakePHP 3 routing provides
 ### About route configuration ###
 
 Every route is automatically named with its key. Root route should be named as root by convention.
-Route can contain path and config keys. Path is always string but config can be string that references to another yaml file that contains configuration. Syntax for external path is "PluginName.RouteFileName". All route configurations should be placed in config folder of project or plugin.
+Route can contain path and config keys. Path is always string but config can be string that references to another YAML file that contains configuration. Syntax for external path is "PluginName.RouteFileNameWithoutExtension". All route configurations should be placed in config folder of project or plugin.
 
 Possible keys for config are listed below:
 
