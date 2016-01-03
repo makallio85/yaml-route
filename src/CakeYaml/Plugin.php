@@ -100,42 +100,6 @@ class Plugin
     }
 
     /**
-     * Load all plugins at once
-     *
-     * @param $options
-     */
-    public static function loadAll($options)
-    {
-        $plugins = [];
-        foreach (App::path('Plugin') as $path) {
-            if (!is_dir($path)) {
-                continue;
-            }
-            $dir = new \DirectoryIterator($path);
-            foreach ($dir as $p) {
-                if ($p->isDir() && !$p->isDot()) {
-                    $plugins[] = $p->getBasename();
-                }
-            }
-        }
-        if (Configure::check('plugins')) {
-            $plugins = array_merge($plugins, array_keys(Configure::read('plugins')));
-            $plugins = array_unique($plugins);
-        }
-
-        foreach ($plugins as $p) {
-            $opts = isset($options[$p]) ? $options[$p] : null;
-            if ($opts === null && isset($options[0])) {
-                $opts = $options[0];
-            }
-            if (Plugin::isLoaded($p)) {
-                continue;
-            }
-            self::load($p, (array)$opts);
-        }
-    }
-
-    /**
      * Is plugin loaded
      *
      * @param $plugin
