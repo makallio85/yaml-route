@@ -17,7 +17,7 @@ Main goal is not to implement all fancy features that CakePHP 3 routing provides
 
 ### About route configuration ###
 
-Every route are automatically named with its key. Root route should be named as root by convention.
+Every route is automatically named with its key. Root route should be named as root by convention.
 Route can contain path and config keys. Path is always string but config can be string that references to another yaml file that contains configuration. Syntax for external path is "PluginName.RouteFileName". All route configurations should be placed in config folder of project or plugin.
 
 Possible keys for config are listed below:
