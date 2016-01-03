@@ -1,6 +1,7 @@
 {
     "name": "makallio85/cake-yaml",
     "description": "Yaml routes for CakePHP3",
+    "license": "MIT",
     "type": "library",
     "require": {
         "php": ">=5.4.16",
