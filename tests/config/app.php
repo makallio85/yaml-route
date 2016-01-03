@@ -48,7 +48,7 @@ return [
         'cssBaseUrl' => 'css/',
         'jsBaseUrl' => 'js/',
         'paths' => [
-            'plugins' => [ROOT . DS . 'plugins' . DS],
+            'plugins' => [ROOT . DS . 'tests' . DS . 'plugins' . DS],
             'templates' => [APP . 'Template' . DS],
             'locales' => [APP . 'Locale' . DS],
         ],
