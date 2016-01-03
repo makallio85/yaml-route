@@ -20,13 +20,14 @@ Route can contain path and config keys. Path is always string but config can be 
 
 Possible keys for config are listed below:
 
-| Key        | Type   | Description         | Notes               |
-|:-----------|:-------|:--------------------|:--------------------|
-| controller | string | Route controller    |                     |
-| action     | string | Route action        |                     |
-| plugin     | string | Route plugin        |                     |
-| extensions | array  | Allowed extensions  | Not implemented yet |
-| routes     | array  | Subroutes           |                     |
+| Key        | Type   | Description                   | Notes               |
+|:-----------|:-------|:------------------------------|:--------------------|
+| controller | string | Route controller              |                     |
+| action     | string | Route action                  |                     |
+| plugin     | string | Route plugin                  |                     |
+| extensions | array  | Allowed extensions            | Not implemented yet |
+| routes     | array  | Subroutes                     |                     |
+| validate   | array  | List of variables to validate |
 
 Note that ```routes``` key can contain all keys above except routes.
 
@@ -61,9 +62,15 @@ cars:
     controller: Cars
     action: index
     routes:
-      bmws:
+      bmws_list:
         path: /bmws
         controller: Bmws
+      bmws_view:
+        path: /bmws/{id}
+        controller: Bmws
+        action: view
+        validate:
+          id: '[0-9]+'
       ladas:
         path: /ladas
         controller: Ladas
@@ -74,8 +81,9 @@ Turns into this
 ```
 \Cake\Routing\Router::plugin('PluginCars', ['path' => '/cars'], function ($routes) {
 	$routes->connect('/', ['controller' => 'Cars', 'action' => 'index'], ['_name' => 'cars']);
-	$routes->connect('/bmws', ['path' => '/bmws', 'controller' => 'Bmws'], ['_name' => 'bmws']);
-	$routes->connect('/ladas', ['path' => '/ladas', 'controller' => 'Ladas'], ['_name' => 'ladas']);
+	$routes->connect('/bmws', ['controller' => 'Bmws'], ['_name' => 'bmws_list']);
+	$routes->connect('/bmws/:id', ['controller' => 'Bmws', 'action' => 'view'], ['_name' => 'bmws_view', 'pass' => ['0' => 'id'], 'id' => '[0-9]+']);
+	$routes->connect('/ladas', ['controller' => 'Ladas'], ['_name' => 'ladas']);
 	$routes->fallbacks('DashedRoute');
 });
 
