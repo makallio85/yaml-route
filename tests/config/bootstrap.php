@@ -20,7 +20,7 @@
 require __DIR__ . '/paths.php';
 
 // Use composer to load the autoloader.
-require ROOT . DS . 'vendor' . DS . 'autoload.php';
+require dirname(dirname(dirname(__FILE__))) . '/vendor/autoload.php';
 
 /**
  * Bootstrap CakePHP.

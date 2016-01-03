@@ -80,7 +80,6 @@ class Plugin
         CakePlugin::load($plugins, $options);
 
         if ($routes) {
-            $pluginPaths = Configure::read('plugins');
             if (!is_array($plugins)) {
                 $plugins = [$plugins];
             }
@@ -89,7 +88,7 @@ class Plugin
                 if (self::isLoaded($plugin)) {
                     throw new CakeYamlException("Plugin $plugin is loaded already and should not be loaded twice.");
                 }
-                $path = $pluginPaths[$plugin] . DS . 'config' . DS . 'routes.yml';
+                $path = Configure::read('App.paths.plugins')[0] . DS . $plugin . DS . 'config' . DS . 'routes.yml';
                 if (!file_exists($path)) {
                     throw new CakeYamlException("Yaml route configuration file not found in path $path.");
                 }
