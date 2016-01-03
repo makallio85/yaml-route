@@ -8,7 +8,7 @@ Main goal is not to implement all fancy features that CakePHP 3 routing provides
 
 ### Installation ###
 
-```composer require makallio85/cake-yaml "dev-master"```
+```composer require makallio85/yaml-route "dev-master"```
 
 ### Usage ###
 
