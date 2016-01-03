@@ -5,11 +5,11 @@ use CakeYaml\Plugin;
 use CakeYaml\Generator;
 
 /**
- * Class PluginTest
+ * Class IntegrationTest
  *
  * @package CakeYaml\Test
  */
-class PluginTest extends \PHPUnit_Framework_TestCase
+class IntegrationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @throws \CakeYaml\CakeYamlException
@@ -29,8 +29,8 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
         Plugin::getInstance()->load('PluginCars', ['bootstrap' => false, 'routes' => true]);
         Generator::getInstance()->run(true);
-        $res = Generator::getDump();
 
+        $res = Generator::getDump();
         $this->assertEquals($assert, $res);
     }
 }
