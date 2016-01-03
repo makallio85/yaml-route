@@ -93,10 +93,11 @@ Turns into this
 ```
 \Cake\Routing\Router::plugin('PluginCars', ['path' => '/cars'], function ($routes) {
 	$routes->extensions(['0' => 'json', '1' => 'xml']);
-	$routes->connect('/', ['controller' => 'Cars', 'action' => 'index'], ['_name' => 'cars']);
-	$routes->connect('/bmws', ['controller' => 'Bmws'], ['_name' => 'bmws_list']);
-	$routes->connect('/bmws/:id', ['controller' => 'Bmws', 'action' => 'view'], ['_name' => 'bmws_view', 'pass' => ['0' => 'id'], 'id' => '[0-9]+']);
-	$routes->connect('/ladas', ['controller' => 'Ladas'], ['_name' => 'ladas']);
+	$routes->connect('/', ['plugin' => 'PluginCars', 'controller' => 'Cars', 'action' => 'index'], ['_name' => 'cars']);
+	$routes->connect('/bmws', ['path' => '/bmws', 'controller' => 'Bmws'], ['_name' => 'bmws_list']);
+	$routes->connect('/bmws/:id', ['_method' => 'GET', 'path' => '/bmws/{id}', 'controller' => 'Bmws', 'action' => 'view'], ['_name' => 'bmws_view', 'pass' => ['0' => 'id'], 'id' => '[0-9]+']);
+	$routes->connect('/bmws/add', ['_method' => 'POST', 'path' => '/bmws/add', 'controller' => 'Bmws', 'action' => 'add'], ['_name' => 'bmws_add']);
+	$routes->connect('/ladas', ['path' => '/ladas', 'controller' => 'Ladas'], ['_name' => 'ladas']);
 	$routes->fallbacks('DashedRoute');
 });
 
