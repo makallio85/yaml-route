@@ -22,15 +22,15 @@ Route can contain path and config keys. Path is always string but config can be 
 
 Possible keys for config are listed below:
 
-| Key        | Type            | Description                   | Notes               |
-|:-----------|:----------------|:------------------------------|:--------------------|
-| controller | string          | Route controller              |                     |
-| action     | string          | Route action                  |                     |
-| plugin     | string          | Route plugin                  |                     |
-| _method    | array or string | Route method                  |                     |
-| extensions | array           | Allowed extensions            |                     |
-| routes     | array           | Subroutes                     |                     |
-| validate   | array           | List of variables to validate |                     |
+| Key        | Type            | Description                   |
+|:-----------|:----------------|:------------------------------|
+| controller | string          | Route controller              |
+| action     | string          | Route action                  |
+| plugin     | string          | Route plugin                  |
+| _method    | array or string | Route method                  |
+| extensions | array           | Allowed extensions            |
+| routes     | array           | Subroutes                     |
+| validate   | array           | List of variables to validate |
 
 Note that ```routes``` key can contain all keys above except routes. Meaning that subroute can't have subroute.
 
