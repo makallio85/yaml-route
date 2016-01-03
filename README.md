@@ -27,9 +27,9 @@ Possible keys for config are listed below:
 | controller | string | Route controller              |                     |
 | action     | string | Route action                  |                     |
 | plugin     | string | Route plugin                  |                     |
-| extensions | array  | Allowed extensions            | Not implemented yet |
+| extensions | array  | Allowed extensions            |                     |
 | routes     | array  | Subroutes                     |                     |
-| validate   | array  | List of variables to validate |
+| validate   | array  | List of variables to validate |                     |
 
 Note that ```routes``` key can contain all keys above except routes.
 
@@ -107,3 +107,4 @@ After that, you are able to get executed calls by calling ```CakeYaml\Generator:
 - Add tests
 - Refactor classes
 - ~~Add support for extensions~~
+- Improve exception handling
