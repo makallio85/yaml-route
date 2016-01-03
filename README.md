@@ -1,6 +1,6 @@
 Cake-yaml
 ---------
-[![Latest Stable Version](https://poser.pugx.org/makallio85/cake-yaml/v/stable)](https://packagist.org/packages/makallio85/cake-yaml) [![Total Downloads](https://poser.pugx.org/makallio85/cake-yaml/downloads)](https://packagist.org/packages/makallio85/cake-yaml) [![Latest Unstable Version](https://poser.pugx.org/makallio85/cake-yaml/v/unstable)](https://packagist.org/packages/makallio85/cake-yaml) [![License](https://poser.pugx.org/makallio85/cake-yaml/license)](https://packagist.org/packages/makallio85/cake-yaml) [![Build Status](https://img.shields.io/travis/makallio85/cake-yaml/master.svg?style=flat-square)](https://travis-ci.org/makallio85/cake-yaml)
+[![Latest Stable Version](https://poser.pugx.org/makallio85/cake-yaml/v/stable)](https://packagist.org/packages/makallio85/cake-yaml) [![Total Downloads](https://poser.pugx.org/makallio85/cake-yaml/downloads)](https://packagist.org/packages/makallio85/cake-yaml) [![Latest Unstable Version](https://poser.pugx.org/makallio85/cake-yaml/v/unstable)](https://packagist.org/packages/makallio85/cake-yaml) [![License](https://poser.pugx.org/makallio85/cake-yaml/license)](https://packagist.org/packages/makallio85/cake-yaml) [![Build Status](https://travis-ci.org/makallio85/cake-yaml.svg?branch=master)](https://travis-ci.org/makallio85/cake-yaml)
 
 Cake-yaml provides possibility to configure CakePHP 3 routes with simple yaml files. This is basically just wrapper for CakePHP core routing that parses yaml files and makes proper calls to Cake\Core\Router.
 
