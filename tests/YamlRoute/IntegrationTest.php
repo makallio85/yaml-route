@@ -1,18 +1,19 @@
 <?php
 
-namespace CakeYaml\Test;
-use CakeYaml\Plugin;
-use CakeYaml\Generator;
+namespace YamlRoute\Test;
+
+use \YamlRoute\Plugin;
+use \YamlRoute\Generator;
 
 /**
  * Class IntegrationTest
  *
- * @package CakeYaml\Test
+ * @package YamlRoute\Test
  */
 class IntegrationTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @throws \CakeYaml\CakeYamlException
+     * @throws \YamlRoute\CakeYamlException
      */
     public function testLoad()
     {

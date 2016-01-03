@@ -1,6 +1,6 @@
 <?php
 
-namespace CakeYaml;
+namespace YamlRoute;
 
 use Cake\Core\Configure;
 use Cake\Core\Plugin as CakePlugin;
@@ -10,7 +10,7 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class Generator
  *
- * @package CakeYaml
+ * @package YamlRoute
  */
 class Generator
 {
@@ -50,7 +50,7 @@ class Generator
     /**
      * Get instance
      *
-     * @return \CakeYaml\Generator|null
+     * @return \YamlRoute\Generator|null
      */
     public static function getInstance()
     {

@@ -13,12 +13,12 @@
   },
   "autoload": {
     "psr-4": {
-      "CakeYaml\\": "src/CakeYaml/"
+      "YamlRoute\\": "src/YamlRoute/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "CakeYaml\\Test\\": "tests/CakeYaml"
+      "YamlRoute\\Test\\": "tests/YamlRoute"
     }
   },
   "minimum-stability": "dev"

@@ -1,8 +1,8 @@
 <?php
 
-namespace CakeYaml;
+namespace YamlRoute;
 
-use Cake\Core\App;
+use \Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Plugin as CakePlugin;
 use Symfony\Component\Yaml\Yaml;
@@ -43,7 +43,7 @@ class Plugin
     /**
      * Get instance
      *
-     * @return \CakeYaml\Plugin|null
+     * @return \YamlRoute\Plugin|null
      */
     public static function getInstance()
     {
@@ -65,12 +65,10 @@ class Plugin
     }
 
     /**
-     * Load plugin.
-     *
      * @param $plugins
      * @param $options
      *
-     * @throws CakeYamlException
+     * @throws \YamlRoute\YamlRouteException
      */
     public static function load($plugins, $options)
     {
@@ -86,11 +84,11 @@ class Plugin
 
             foreach ($plugins as $plugin) {
                 if (self::isLoaded($plugin)) {
-                    throw new CakeYamlException("Plugin $plugin is loaded already and should not be loaded twice.");
+                    throw new YamlRouteException("Plugin $plugin is loaded already and should not be loaded twice.");
                 }
                 $path = Configure::read('App.paths.plugins')[0] . DS . $plugin . DS . 'config' . DS . 'routes.yml';
                 if (!file_exists($path)) {
-                    throw new CakeYamlException("Yaml route configuration file not found in path $path.");
+                    throw new YamlRouteException("Yaml route configuration file not found in path $path.");
                 }
                 $route = Yaml::parse(file_get_contents($path));
                 self::_addLoaded(['name' => $plugin, 'route' => $route]);

@@ -1,11 +1,11 @@
 <?php
 
-namespace CakeYaml;
+namespace YamlRoute;
 
 /**
  * Class ConversionTrait
  *
- * @package CakeYaml
+ * @package YamlRoute
  */
 trait ConversionTrait
 {

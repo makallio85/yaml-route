@@ -12,8 +12,8 @@ Main goal is not to implement all fancy features that CakePHP 3 routing provides
 
 ### Usage ###
 
-1. Replace all contents in ```config/routes.php``` file with single method call ```CakeYaml\Generator::getInstance()->run()```
-2. Load all plugins by calling ```CakeYaml\Plugin::getInstance()->load($plugin, $options)```  Method is basically just wrapper for ```Cake\Core\Plugin::load()``` method. Note that ```Cake\Core\Plugin::loadAll()``` method is not supported and all plugins should be loaded one at time.
+1. Replace all contents in ```config/routes.php``` file with single method call ```YamlRoute\Generator::getInstance()->run()```
+2. Load all plugins by calling ```YamlRoute\Plugin::getInstance()->load($plugin, $options)```  Method is basically just wrapper for ```Cake\Core\Plugin::load()``` method. Note that ```Cake\Core\Plugin::loadAll()``` method is not supported and all plugins should be loaded one at time.
 3. Add your own route to ```routes.yml``` files to your project and desired plugins.
 
 ### About route configuration ###
@@ -107,8 +107,8 @@ Turns into this
 
 ### Debugging ###
 
-If you want to debug generated routes, you can set debug parameter to true when calling ```CakeYaml\Generator::getInstance()->run(true)```.
-After that, you are able to get executed calls by calling ```CakeYaml\Generator::getInstance()->getDump()```.
+If you want to debug generated routes, you can set debug parameter to true when calling ```YamlRoute\Generator::getInstance()->run(true)```.
+After that, you are able to get executed calls by calling ```YamlRoute\Generator::getInstance()->getDump()```.
 
 ### toDo ###
 
