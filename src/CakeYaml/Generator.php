@@ -158,6 +158,8 @@ class Generator
 
         Router::$method(
             $path, $options, function ($routes) use ($route, $name) {
+            $exclude = ['pass', 'validate', 'routes', 'extensions', 'default_route_class'];
+
             if (isset($route['config']) && isset($route['config']['controller'])) {
                 if (isset($route['config']['extensions']) && is_array($route['config']['extensions'])) {
                     /* @var \Cake\Routing\Router $routes */
@@ -170,7 +172,7 @@ class Generator
 
                 $opts = [];
                 foreach ($route['config'] as $key => $item) {
-                    if (!in_array($key, ['routes', 'extensions', 'plugin', 'default_route_class'])) {
+                    if (!in_array($key, $exclude)) {
                         $opts[$key] = $item;
                     }
                 }
@@ -197,7 +199,7 @@ class Generator
                     $x = self::_createPassParams($x);
                     $opts = [];
                     foreach ($x as $k => $item) {
-                        if (!in_array($k, ['routes', 'extensions', 'plugin', 'path', 'pass', 'validate'])) {
+                        if (!in_array($k, $exclude)) {
                             $opts[$k] = $item;
                         }
                     }

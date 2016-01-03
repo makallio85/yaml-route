@@ -22,16 +22,17 @@ Route can contain path and config keys. Path is always string but config can be 
 
 Possible keys for config are listed below:
 
-| Key        | Type   | Description                   | Notes               |
-|:-----------|:-------|:------------------------------|:--------------------|
-| controller | string | Route controller              |                     |
-| action     | string | Route action                  |                     |
-| plugin     | string | Route plugin                  |                     |
-| extensions | array  | Allowed extensions            |                     |
-| routes     | array  | Subroutes                     |                     |
-| validate   | array  | List of variables to validate |                     |
+| Key        | Type            | Description                   | Notes               |
+|:-----------|:----------------|:------------------------------|:--------------------|
+| controller | string          | Route controller              |                     |
+| action     | string          | Route action                  |                     |
+| plugin     | string          | Route plugin                  |                     |
+| _method    | array or string | Route method                  |                     |
+| extensions | array           | Allowed extensions            |                     |
+| routes     | array           | Subroutes                     |                     |
+| validate   | array           | List of variables to validate |                     |
 
-Note that ```routes``` key can contain all keys above except routes.
+Note that ```routes``` key can contain all keys above except routes. Meaning that subroute can't have subroute.
 
 ### Examples ###
 
@@ -71,11 +72,17 @@ cars:
         path: /bmws
         controller: Bmws
       bmws_view:
+        _method: GET
         path: /bmws/{id}
         controller: Bmws
         action: view
         validate:
           id: '[0-9]+'
+      bmws_add:
+        _method: POST
+        path: /bmws/add
+        controller: Bmws
+        action: add
       ladas:
         path: /ladas
         controller: Ladas
