@@ -94,3 +94,10 @@ Turns into this
 
 If you want to debug generated routes, you can set debug parameter to true when calling ```CakeYaml\Generator::getInstance()->run(true)```.
 After that, you are able to get executed calls by calling ```CakeYaml\Generator::getInstance()->getDump()```.
+
+### toDo ###
+
+- Add support for true inheritance by allowing subroute to contain subroute
+- Add tests
+- Refactor classes
+- Add support for extensions
