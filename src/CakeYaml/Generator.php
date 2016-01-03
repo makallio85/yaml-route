@@ -159,6 +159,13 @@ class Generator
         Router::$method(
             $path, $options, function ($routes) use ($route, $name) {
             if (isset($route['config']) && isset($route['config']['controller'])) {
+                if (isset($route['config']['extensions']) && is_array($route['config']['extensions'])) {
+                    /* @var \Cake\Routing\Router $routes */
+                    $routes->extensions($route['config']['extensions']);
+                    if (self::$_debug) {
+                        self::_addToDump("\t" . '$routes->extensions(' . self::_arrToStr($route['config']['extensions']) . ');');
+                    }
+                }
                 $route = self::_createPassParams($route);
 
                 $opts = [];
@@ -180,6 +187,13 @@ class Generator
             }
             if (isset($route['config']) && isset($route['config']['routes'])) {
                 foreach ($route['config']['routes'] as $key => $x) {
+                    if (isset($x['extensions']) && is_array($x['extensions'])) {
+                        /* @var \Cake\Routing\Router $routes */
+                        $routes->extensions($x['extensions']);
+                        if (self::$_debug) {
+                            self::_addToDump("\t" . '$routes->extensions(' . self::_arrToStr($x['extensions']) . ');');
+                        }
+                    }
                     $x = self::_createPassParams($x);
                     $opts = [];
                     foreach ($x as $k => $item) {

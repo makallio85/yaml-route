@@ -63,6 +63,9 @@ cars:
     plugin: PluginCars
     controller: Cars
     action: index
+    extensions:
+      - json
+      - xml
     routes:
       bmws_list:
         path: /bmws
@@ -82,6 +85,7 @@ Turns into this
 
 ```
 \Cake\Routing\Router::plugin('PluginCars', ['path' => '/cars'], function ($routes) {
+	$routes->extensions(['0' => 'json', '1' => 'xml']);
 	$routes->connect('/', ['controller' => 'Cars', 'action' => 'index'], ['_name' => 'cars']);
 	$routes->connect('/bmws', ['controller' => 'Bmws'], ['_name' => 'bmws_list']);
 	$routes->connect('/bmws/:id', ['controller' => 'Bmws', 'action' => 'view'], ['_name' => 'bmws_view', 'pass' => ['0' => 'id'], 'id' => '[0-9]+']);
@@ -102,4 +106,4 @@ After that, you are able to get executed calls by calling ```CakeYaml\Generator:
 - Add support for true inheritance by allowing subroute to contain subroute
 - Add tests
 - Refactor classes
-- Add support for extensions
+- ~~Add support for extensions~~
