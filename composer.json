@@ -1,6 +1,6 @@
 {
-  "name": "makallio85/cake-yaml",
-  "description": "Yaml routes for CakePHP3",
+  "name": "makallio85/yaml-route",
+  "description": "Configure routes with simple YAML files",
   "license": "MIT",
   "type": "library",
   "require": {
@@ -18,7 +18,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "CakeYaml\\Test\\": "test/CakeYaml/Test/"
+      "CakeYaml\\Test\\": "tests/CakeYaml"
     }
   },
   "minimum-stability": "dev"
