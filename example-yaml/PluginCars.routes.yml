@@ -1,0 +1,28 @@
+cars:
+  path: /cars
+  config:
+    plugin: PluginCars
+    controller: Cars
+    action: index
+    extensions:
+      - json
+      - xml
+    routes:
+      bmws_list:
+        path: /bmws
+        controller: Bmws
+      bmws_view:
+        _method: GET
+        path: /bmws/{id}
+        controller: Bmws
+        action: view
+        validate:
+          id: '[0-9]+'
+      bmws_add:
+        _method: POST
+        path: /bmws/add
+        controller: Bmws
+        action: add
+      ladas:
+        path: /ladas
+        controller: Ladas
