@@ -3,6 +3,13 @@ php:
   - 7.0
   - 5.6
   - 5.5
-script: phpunit
+install:
+  - curl -s http://getcomposer.org/installer | php
+  - php composer.phar install --dev --no-interaction
 before_script:
   - composer install
+script:
+  - mkdir -p build/logs
+  - php vendor/bin/phpunit -c phpunit.xml.dist
+after_success:
+  - travis_retry php vendor/bin/coveralls
