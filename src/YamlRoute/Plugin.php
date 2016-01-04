@@ -2,7 +2,6 @@
 
 namespace YamlRoute;
 
-use \Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Plugin as CakePlugin;
 use Symfony\Component\Yaml\Yaml;
@@ -21,7 +20,7 @@ class Plugin
      *
      * @var array
      */
-    private static $_loaded = [];
+    private $_loaded = [];
 
     /**
      * Instance pf Plugin class
@@ -35,9 +34,9 @@ class Plugin
      *
      * @param $plugin
      */
-    private static function _addLoaded($plugin)
+    private function _addLoaded($plugin)
     {
-        self::$_loaded[] = $plugin;
+        $this->_loaded[] = $plugin;
     }
 
     /**
@@ -59,9 +58,9 @@ class Plugin
      *
      * @return array
      */
-    public static function getLoaded()
+    public function getLoaded()
     {
-        return self::$_loaded;
+        return $this->_loaded;
     }
 
     /**
@@ -70,7 +69,7 @@ class Plugin
      *
      * @throws \YamlRoute\YamlRouteException
      */
-    public static function load($plugins, $options)
+    public function load($plugins, $options)
     {
         $routes = isset($options['routes']) && $options['routes'] === true ? true : false;
         $options['routes'] = false;
@@ -83,7 +82,7 @@ class Plugin
             }
 
             foreach ($plugins as $plugin) {
-                if (self::isLoaded($plugin)) {
+                if ($this->isLoaded($plugin)) {
                     throw new YamlRouteException("Plugin $plugin is loaded already and should not be loaded twice.");
                 }
                 $path = Configure::read('App.paths.plugins')[0] . DS . $plugin . DS . 'config' . DS . 'routes.yml';
@@ -91,7 +90,7 @@ class Plugin
                     throw new YamlRouteException("Yaml route configuration file not found in path $path.");
                 }
                 $route = Yaml::parse(file_get_contents($path));
-                self::_addLoaded(['name' => $plugin, 'route' => $route]);
+                $this->_addLoaded(['name' => $plugin, 'route' => $route]);
             }
         }
     }
@@ -103,7 +102,7 @@ class Plugin
      *
      * @return bool
      */
-    public static function isLoaded($plugin)
+    public function isLoaded($plugin)
     {
         foreach (self::getLoaded() as $loaded) {
             if ($plugin === $loaded['name']) {

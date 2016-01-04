@@ -21,7 +21,7 @@ class Generator
      *
      * @var array
      */
-    private static $_routeConfigs = [];
+    private $_routeConfigs = [];
 
     /**
      * Instance of Generator
@@ -33,17 +33,17 @@ class Generator
     /**
      * @var
      */
-    private static $_dump;
+    private $_dump;
 
     /**
      * @var bool
      */
-    private static $_debug = false;
+    private $_debug = false;
 
     /**
      * @var bool
      */
-    private static $_executed = [
+    private $_executed = [
         '\Cake\Core\Plugin::routes()' => false,
     ];
 
@@ -66,30 +66,30 @@ class Generator
      *
      * @param $config
      */
-    private static function _addRouteConfig($config)
+    private function _addRouteConfig($config)
     {
-        self::$_routeConfigs[] = $config;
+        $this->_routeConfigs[] = $config;
     }
 
     /**
      * Set route configurations
      */
-    private static function _setRouteConfigs()
+    private function _setRouteConfigs()
     {
-        foreach (Plugin::getLoaded() as $item) {
-            self::_addRouteConfig($item);
+        foreach (Plugin::getInstance()->getLoaded() as $item) {
+            $this->_addRouteConfig($item);
         }
     }
 
     /**
      * Load project routes.yml file
      */
-    private static function _loadProjectConfig()
+    private function _loadProjectConfig()
     {
         $path = ROOT . DS . 'config' . DS . 'routes.yml';
         if (file_exists($path)) {
             $route = Yaml::parse(file_get_contents($path));
-            self::_addRouteConfig(['name' => 'Project', 'route' => $route]);
+            $this->_addRouteConfig(['name' => 'Project', 'route' => $route]);
         }
     }
 
@@ -98,27 +98,26 @@ class Generator
      *
      * @return array
      */
-    private static function _getRouteConfigs()
+    private function _getRouteConfigs()
     {
-        return self::$_routeConfigs;
+        return $this->_routeConfigs;
     }
 
     /**
      * Generate routes
      */
-    private static function _generateRoutes()
+    private function _generateRoutes()
     {
-        self::_loadProjectConfig();
-        $configs = self::_getRouteConfigs();
+        $this->_loadProjectConfig();
+        $configs = $this->_getRouteConfigs();
         foreach ($configs as $config) {
             if (isset($config['route'])) {
                 foreach ($config['route'] as $name => $route) {
-
-                    self::_newRoute($name, $route);
+                    $this->_newRoute($name, $route);
                 }
             }
         }
-        self::_pluginRoutes();
+        $this->_pluginRoutes();
     }
 
     /**
@@ -127,7 +126,7 @@ class Generator
      * @param $name
      * @param $route
      */
-    private static function _newRoute($name, $route)
+    private function _newRoute($name, $route)
     {
         $method = 'scope';
         $path = '/';
@@ -137,7 +136,7 @@ class Generator
             if (!is_array($route['config'])) {
                 $route['config'] = self::_loadRouteConfig($route['config']);
             }
-            if (isset($route['config']['plugin']) && Plugin::isLoaded($route['config']['plugin'])) {
+            if (isset($route['config']['plugin']) && Plugin::getInstance()->isLoaded($route['config']['plugin'])) {
                 $method = 'plugin';
                 $path = $route['config']['plugin'];
                 $options = ['path' => $route['path']];
@@ -152,8 +151,8 @@ class Generator
         }
 
         // Debugging
-        if (self::$_debug) {
-            self::_addToDump("\\Cake\\Routing\\Router::$method('$path', " . self::_arrToStr($options) . ", function (" . '$routes' . ") {");
+        if ($this->_debug) {
+            $this->_addToDump("\\Cake\\Routing\\Router::$method('$path', " . $this->_arrToStr($options) . ", function (" . '$routes' . ") {");
         }
 
         Router::$method(
@@ -164,11 +163,11 @@ class Generator
                 if (isset($route['config']['extensions']) && is_array($route['config']['extensions'])) {
                     /* @var \Cake\Routing\Router $routes */
                     $routes->extensions($route['config']['extensions']);
-                    if (self::$_debug) {
-                        self::_addToDump("\t" . '$routes->extensions(' . self::_arrToStr($route['config']['extensions']) . ');');
+                    if ($this->_debug) {
+                        $this->_addToDump("\t" . '$routes->extensions(' . $this->_arrToStr($route['config']['extensions']) . ');');
                     }
                 }
-                $route = self::_createPassParams($route);
+                $route = $this->_createPassParams($route);
 
                 $opts = [];
                 foreach ($route['config'] as $key => $item) {
@@ -177,14 +176,14 @@ class Generator
                     }
                 }
 
-                $thirdParam = self::_buildThirdParam($name, $route);
+                $thirdParam = $this->_buildThirdParam($name, $route);
 
                 /* @var \Cake\Routing\Router $routes */
                 $routes->connect('/', $opts, $thirdParam);
 
                 // Debugging
-                if (self::$_debug) {
-                    self::_addToDump("\t" . '$routes->connect(\'/\', ' . self::_arrToStr($opts) . ', ' . self::_arrToStr($thirdParam) . ');');
+                if ($this->_debug) {
+                    $this->_addToDump("\t" . '$routes->connect(\'/\', ' . $this->_arrToStr($opts) . ', ' . $this->_arrToStr($thirdParam) . ');');
                 }
             }
             if (isset($route['config']) && isset($route['config']['routes'])) {
@@ -192,8 +191,8 @@ class Generator
                     if (isset($x['extensions']) && is_array($x['extensions'])) {
                         /* @var \Cake\Routing\Router $routes */
                         $routes->extensions($x['extensions']);
-                        if (self::$_debug) {
-                            self::_addToDump("\t" . '$routes->extensions(' . self::_arrToStr($x['extensions']) . ');');
+                        if ($this->_debug) {
+                            $this->_addToDump("\t" . '$routes->extensions(' . $this->_arrToStr($x['extensions']) . ');');
                         }
                     }
                     $x = self::_createPassParams($x);
@@ -204,14 +203,14 @@ class Generator
                         }
                     }
 
-                    $thirdParam = self::_buildThirdParam($key, $x);
+                    $thirdParam = $this->_buildThirdParam($key, $x);
 
                     /* @var \Cake\Routing\Router $routes */
-                    $routes->connect('/' . self::_varsToString($x['path']), $opts, $thirdParam);
+                    $routes->connect('/' . $this->_varsToString($x['path']), $opts, $thirdParam);
 
                     // Debugging
-                    if (self::$_debug) {
-                        self::_addToDump("\t" . '$routes->connect(\'' . self::_varsToString($x['path']) . '\', ' . self::_arrToStr($opts) . ', ' . self::_arrToStr($thirdParam) . ');');
+                    if ($this->_debug) {
+                        $this->_addToDump("\t" . '$routes->connect(\'' . $this->_varsToString($x['path']) . '\', ' . $this->_arrToStr($opts) . ', ' . $this->_arrToStr($thirdParam) . ');');
                     }
                 }
             }
@@ -224,15 +223,15 @@ class Generator
             $routes->fallbacks($fallbacks);
 
             // Debugging
-            if (self::$_debug) {
-                self::_addToDump("\t" . '$routes->fallbacks(\'' . $fallbacks . '\');');
+            if ($this->_debug) {
+                $this->_addToDump("\t" . '$routes->fallbacks(\'' . $fallbacks . '\');');
             }
         }
         );
 
         // Debugging
-        if (self::$_debug) {
-            self::_addToDump('});' . "\n");
+        if ($this->_debug) {
+            $this->_addToDump('});' . "\n");
         }
     }
 
@@ -284,15 +283,15 @@ class Generator
     /**
      * Run Plugin::routes()
      */
-    private static function _pluginRoutes()
+    private function _pluginRoutes()
     {
         if (!self::_isExecuted('\Cake\Core\Plugin::routes()')) {
             CakePlugin::routes();
-            self::setExecuted('\Cake\Core\Plugin::routes()');
+            $this->_setExecuted('\Cake\Core\Plugin::routes()');
 
             // Debugging
-            if (self::$_debug) {
-                self::_addToDump('\Cake\Core\Plugin::routes();' . "\n");
+            if ($this->_debug) {
+                $this->_addToDump('\Cake\Core\Plugin::routes();' . "\n");
             }
         }
     }
@@ -302,9 +301,9 @@ class Generator
      *
      * @param $name
      */
-    private static function setExecuted($name)
+    private function _setExecuted($name)
     {
-        self::$_executed[$name] = true;
+        $this->_executed[$name] = true;
     }
 
     /**
@@ -314,9 +313,9 @@ class Generator
      *
      * @return mixed
      */
-    private static function _isExecuted($name)
+    private function _isExecuted($name)
     {
-        return self::$_executed[$name];
+        return $this->_executed[$name];
     }
 
     /**
@@ -324,9 +323,9 @@ class Generator
      *
      * @param $string
      */
-    private static function _addToDump($string)
+    private function _addToDump($string)
     {
-        self::$_dump .= $string . "\n";
+        $this->_dump .= $string . "\n";
     }
 
     /**
@@ -334,9 +333,9 @@ class Generator
      *
      * @return mixed
      */
-    public static function getDump()
+    public function getDump()
     {
-        return trim(self::$_dump);
+        return trim($this->_dump);
     }
 
     /**
@@ -346,11 +345,11 @@ class Generator
      *
      * @return array
      */
-    private static function _loadRouteConfig($config)
+    private function _loadRouteConfig($config)
     {
         if (strpos($config, '.') !== false) {
             list($plugin, $file) = explode('.', $config);
-            $pluginPaths = Plugin::getLoaded();
+            $pluginPaths = Plugin::getInstance()->getLoaded();
             $path = $pluginPaths[$plugin] . DS . 'config' . DS . $file . '.yml';
         } else {
             $path = ROOT . DS . 'config' . DS . $config . '.yml';
@@ -363,11 +362,15 @@ class Generator
      * Generate routes based on yml files
      *
      * @param $debug
+     *
+     * @return $this
      */
-    public static function run($debug = false)
+    public function run($debug = false)
     {
-        self::$_debug = $debug;
-        self::_setRouteConfigs();
-        self::_generateRoutes();
+        $this->_debug = $debug;
+        $this->_setRouteConfigs();
+        $this->_generateRoutes();
+
+        return $this;
     }
 }

@@ -16,7 +16,7 @@ trait ConversionTrait
      *
      * @return string
      */
-    private static function _arrToStr($array)
+    private function _arrToStr($array)
     {
         $str = '[';
         foreach ($array as $key => $value) {
@@ -39,7 +39,7 @@ trait ConversionTrait
      *
      * @return mixed
      */
-    private static function _varsToString($string)
+    private function _varsToString($string)
     {
         $string = str_replace('{', ':', $string);
 
