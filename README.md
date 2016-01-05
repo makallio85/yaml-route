@@ -1,4 +1,4 @@
-Yaml-route 1.0.2
+Yaml-route
 ----------
 [![Latest Stable Version](https://poser.pugx.org/makallio85/yaml-route/v/stable)](https://packagist.org/packages/makallio85/yaml-route) [![Total Downloads](https://poser.pugx.org/makallio85/yaml-route/downloads)](https://packagist.org/packages/makallio85/yaml-route) [![Latest Unstable Version](https://poser.pugx.org/makallio85/yaml-route/v/unstable)](https://packagist.org/packages/makallio85/yaml-route) [![License](https://poser.pugx.org/makallio85/yaml-route/license)](https://packagist.org/packages/makallio85/yaml-route) [![Build Status](https://travis-ci.org/makallio85/yaml-route.svg?branch=master)](https://travis-ci.org/makallio85/yaml-route) [![Coverage Status](https://coveralls.io/repos/makallio85/yaml-route/badge.svg?branch=master&service=github)](https://coveralls.io/github/makallio85/yaml-route?branch=master)
 
