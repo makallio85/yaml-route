@@ -1,20 +1,21 @@
 <?php
 
-namespace YamlRoute\Test;
+namespace makallio85\YamlRoute\Test;
 
-use \YamlRoute\Plugin;
-use \YamlRoute\Generator;
+use makallio85\YamlRoute\Plugin;
+use makallio85\YamlRoute\Generator;
 
 /**
  * Class IntegrationTest
  *
- * @package YamlRoute\Test
+ * @package makallio85\YamlRoute\Test
  */
 class IntegrationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Basic integration test
-     * @throws \YamlRoute\YamlRouteException
+     *
+     * @throws \makallio85\YamlRoute\YamlRouteException
      */
     public function testIntegration()
     {
@@ -30,7 +31,7 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         $assert .= '\Cake\Core\Plugin::routes();';
 
         Plugin::getInstance()->load('PluginCars', ['bootstrap' => false, 'routes' => true]);
-        Generator::getInstance()->run(true);
+        Generator::getInstance()->setProjectFilePath(ROOT . DS . 'tests' . DS . 'config' . DS . 'routes.yml')->run(true);
 
         $res = Generator::getInstance()->getDump();
         $this->assertEquals($assert, $res);

@@ -14,12 +14,12 @@
   },
   "autoload": {
     "psr-4": {
-      "YamlRoute\\": "src/YamlRoute/"
+      "makallio85\\YamlRoute\\": "src/YamlRoute/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "YamlRoute\\Test\\": "tests/YamlRoute"
+      "makallio85\\YamlRoute\\Test\\": "tests/YamlRoute"
     }
   },
   "minimum-stability": "dev"

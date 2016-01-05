@@ -1,11 +1,11 @@
 <?php
 
-namespace YamlRoute;
+namespace makallio85\YamlRoute;
 
 /**
  * Class ConversionTrait
  *
- * @package YamlRoute
+ * @package makallio85\YamlRoute
  */
 trait ConversionTrait
 {

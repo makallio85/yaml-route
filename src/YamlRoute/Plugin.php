@@ -1,6 +1,6 @@
 <?php
 
-namespace YamlRoute;
+namespace makallio85\YamlRoute;
 
 use Cake\Core\Configure;
 use Cake\Core\Plugin as CakePlugin;
@@ -11,7 +11,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * All CakePHP plugins should be loaded via this class to ensure all plugin routes are initialized properly
  *
- * @package CakeYaml
+ * @package makallio85\CakeYaml
  */
 class Plugin
 {
@@ -42,7 +42,7 @@ class Plugin
     /**
      * Get instance
      *
-     * @return \YamlRoute\Plugin|null
+     * @return \makallio85\YamlRoute\Plugin|null
      */
     public static function getInstance()
     {
@@ -67,7 +67,7 @@ class Plugin
      * @param $plugins
      * @param $options
      *
-     * @throws \YamlRoute\YamlRouteException
+     * @throws \makallio85\YamlRoute\YamlRouteException
      */
     public function load($plugins, $options)
     {

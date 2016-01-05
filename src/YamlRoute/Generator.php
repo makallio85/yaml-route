@@ -1,6 +1,6 @@
 <?php
 
-namespace YamlRoute;
+namespace makallio85\YamlRoute;
 
 use Cake\Core\Configure;
 use Cake\Core\Plugin as CakePlugin;
@@ -10,7 +10,7 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class Generator
  *
- * @package YamlRoute
+ * @package makallio85\YamlRoute
  */
 class Generator
 {
@@ -48,9 +48,16 @@ class Generator
     ];
 
     /**
+     * Project route file path
+     *
+     * @var
+     */
+    private $_projectFilePath;
+
+    /**
      * Get instance
      *
-     * @return \YamlRoute\Generator|null
+     * @return \makallio85\YamlRoute\Generator
      */
     public static function getInstance()
     {
@@ -83,14 +90,45 @@ class Generator
 
     /**
      * Load project routes.yml file
+     *
+     * @throws \makallio85\YamlRoute\YamlRouteException
      */
     private function _loadProjectConfig()
     {
-        $path = ROOT . DS . 'config' . DS . 'routes.yml';
+        if ($this->_projectFilePath === null) {
+            $this->_projectFilePath = ROOT . DS . 'config' . DS . 'routes.yml';
+        }
+        $path = $this->_getProjectFilePath();
         if (file_exists($path)) {
             $route = Yaml::parse(file_get_contents($path));
-            $this->_addRouteConfig(['name' => 'Project', 'route' => $route]);
+            $data = ['name' => 'Project', 'route' => $route, 'file' => $path];
+            Validator::run($data);
+            $this->_addRouteConfig($data);
         }
+    }
+
+    /**
+     * Get project file path
+     *
+     * @return mixed
+     */
+    private function _getProjectFilePath()
+    {
+        return $this->_projectFilePath;
+    }
+
+    /**
+     * Set project file path
+     *
+     * @param $path
+     *
+     * @return $this
+     */
+    public function setProjectFilePath($path)
+    {
+        $this->_projectFilePath = $path;
+
+        return $this;
     }
 
     /**
