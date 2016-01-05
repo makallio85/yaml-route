@@ -1,6 +1,6 @@
-Yaml-route
+Yaml-route 1.0.1
 ----------
-[![Latest Stable Version](https://poser.pugx.org/makallio85/yaml-route/v/stable)](https://packagist.org/packages/makallio85/yaml-route) [![Total Downloads](https://poser.pugx.org/makallio85/yaml-route/downloads)](https://packagist.org/packages/makallio85/yaml-route) [![Latest Unstable Version](https://poser.pugx.org/makallio85/yaml-route/v/unstable)](https://packagist.org/packages/makallio85/yaml-route) [![License](https://poser.pugx.org/makallio85/yaml-route/license)](https://packagist.org/packages/makallio85/yaml-route) [![Build Status](https://travis-ci.org/makallio85/yaml-route.svg?branch=master)](https://travis-ci.org/makallio85/yaml-route)
+[![Latest Stable Version](https://poser.pugx.org/makallio85/yaml-route/v/stable)](https://packagist.org/packages/makallio85/yaml-route) [![Total Downloads](https://poser.pugx.org/makallio85/yaml-route/downloads)](https://packagist.org/packages/makallio85/yaml-route) [![Latest Unstable Version](https://poser.pugx.org/makallio85/yaml-route/v/unstable)](https://packagist.org/packages/makallio85/yaml-route) [![License](https://poser.pugx.org/makallio85/yaml-route/license)](https://packagist.org/packages/makallio85/yaml-route) [![Build Status](https://travis-ci.org/makallio85/yaml-route.svg?branch=1.0.1)](https://travis-ci.org/makallio85/yaml-route)
 
 Yaml-route provides possibility to configure CakePHP 3 routes with simple YAML files. This is basically just wrapper for CakePHP core routing that parses YAML files and makes proper calls to ```Cake\Core\Router```.
 
