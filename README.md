@@ -1,4 +1,4 @@
-Yaml-route
+Yaml-route 1.0.2
 ----------
 [![Latest Stable Version](https://poser.pugx.org/makallio85/yaml-route/v/stable)](https://packagist.org/packages/makallio85/yaml-route) [![Total Downloads](https://poser.pugx.org/makallio85/yaml-route/downloads)](https://packagist.org/packages/makallio85/yaml-route) [![Latest Unstable Version](https://poser.pugx.org/makallio85/yaml-route/v/unstable)](https://packagist.org/packages/makallio85/yaml-route) [![License](https://poser.pugx.org/makallio85/yaml-route/license)](https://packagist.org/packages/makallio85/yaml-route) [![Build Status](https://travis-ci.org/makallio85/yaml-route.svg?branch=master)](https://travis-ci.org/makallio85/yaml-route) [![Coverage Status](https://coveralls.io/repos/makallio85/yaml-route/badge.svg?branch=master&service=github)](https://coveralls.io/github/makallio85/yaml-route?branch=master)
 
@@ -8,20 +8,22 @@ Main goal is not to implement all fancy features that CakePHP 3 routing provides
 
 ### Installation ###
 
-```composer require makallio85/yaml-route "dev-master"```
+```composer require makallio85/yaml-route```
 
 ### Usage ###
 
-1. Replace all contents in ```config/routes.php``` file with single method call ```YamlRoute\Generator::getInstance()->run()```
-2. Load all plugins by calling ```YamlRoute\Plugin::getInstance()->load($plugin, $options)```  Method is basically just wrapper for ```Cake\Core\Plugin::load()``` method. Note that ```Cake\Core\Plugin::loadAll()``` method is not supported and all plugins should be loaded one at time.
+1. Replace all contents in ```config/routes.php``` file with single method call ```makallio85\YamlRoute\Generator::getInstance()->run()```
+2. Load all plugins by calling ```makallio85\YamlRoute\Plugin::getInstance()->load($plugin, $options)```  Method is basically just wrapper for ```Cake\Core\Plugin::load()``` method. Note that ```Cake\Core\Plugin::loadAll()``` method is not supported and all plugins should be loaded one at time.
 3. Add your own route to ```routes.yml``` files to your project and desired plugins.
 
 ### About route configuration ###
 
 Every route is automatically named with its key. Root route should be named as root by convention.
-Route can contain path and config keys. Path is always string but config can be string that references to another YAML file that contains configuration. Syntax for external path is "PluginName.RouteFileNameWithoutExtension". All route configurations should be placed in config folder of project or plugin.
+Route can contain path and config keys. Path is always string but config can be string that references to another YAML file that contains routes configuration. Syntax for external path is "PluginName.RouteFileNameWithoutExtension". All route configurations should be placed in config folder of project or plugin.
 
-Possible keys for config are listed below:
+Route can also contain subroutes and they are defined inside ```config.routes``` key
+
+```config``` key can contain keys listed below
 
 | Key        | Type            | Description                   |
 |:-----------|:----------------|:------------------------------|
@@ -33,7 +35,7 @@ Possible keys for config are listed below:
 | routes     | array           | Subroutes                     |
 | validate   | array           | List of variables to validate |
 
-Note that ```routes``` key can contain all keys above except routes. Meaning that subroute can't have subroute.
+Note that subroutes can't contain routes so ```config.routes``` for subroutes is not available.
 
 ### Examples ###
 
@@ -46,7 +48,7 @@ root:
 
 Turns into this
 
-```
+```php
 \Cake\Routing\Router::scope('/', [], function ($routes) {
 	$routes->fallbacks('DashedRoute');
 });
@@ -56,7 +58,7 @@ Turns into this
 
 ##### Plugin Routing #####
 
-```PluginCars/config/routes.yml``` like this
+```plugins/PluginCars/config/routes.yml``` like this
 
 ```
 cars:
@@ -71,35 +73,39 @@ cars:
     routes:
       bmws_list:
         path: /bmws
-        controller: Bmws
+        config:
+          controller: Bmws
       bmws_view:
-        _method: GET
         path: /bmws/{id}
-        controller: Bmws
-        action: view
-        validate:
-          id: '[0-9]+'
+        config:
+          _method: GET
+          controller: Bmws
+          action: view
+          validate:
+            id: '[0-9]+'
       bmws_add:
-        _method: POST
         path: /bmws/add
-        controller: Bmws
-        action: add
+        config:
+          _method: POST
+          controller: Bmws
+          action: add
       ladas:
         path: /ladas
-        controller: Ladas
+        config:
+          controller: Ladas
 ```
 
 Turns into this
 
-```
+```php
 \Cake\Routing\Router::plugin('PluginCars', ['path' => '/cars'], function ($routes) {
-	$routes->extensions(['0' => 'json', '1' => 'xml']);
-	$routes->connect('/', ['plugin' => 'PluginCars', 'controller' => 'Cars', 'action' => 'index'], ['_name' => 'cars']);
-	$routes->connect('/bmws', ['path' => '/bmws', 'controller' => 'Bmws'], ['_name' => 'bmws_list']);
-	$routes->connect('/bmws/:id', ['_method' => 'GET', 'path' => '/bmws/{id}', 'controller' => 'Bmws', 'action' => 'view'], ['_name' => 'bmws_view', 'pass' => ['0' => 'id'], 'id' => '[0-9]+']);
-	$routes->connect('/bmws/add', ['_method' => 'POST', 'path' => '/bmws/add', 'controller' => 'Bmws', 'action' => 'add'], ['_name' => 'bmws_add']);
-	$routes->connect('/ladas', ['path' => '/ladas', 'controller' => 'Ladas'], ['_name' => 'ladas']);
-	$routes->fallbacks('DashedRoute');
+  $routes->extensions(['0' => 'json', '1' => 'xml']);
+  $routes->connect('/', ['plugin' => 'PluginCars', 'controller' => 'Cars', 'action' => 'index'], ['_name' => 'cars']);
+  $routes->connect('/bmws', ['controller' => 'Bmws'], ['_name' => 'bmws_list']);
+  $routes->connect('/bmws/:id', ['_method' => 'GET', 'controller' => 'Bmws', 'action' => 'view'], ['_name' => 'bmws_view', 'pass' => ['0' => 'id'], 'id' => '[0-9]+']);
+  $routes->connect('/bmws/add', ['_method' => 'POST', 'controller' => 'Bmws', 'action' => 'add'], ['_name' => 'bmws_add']);
+  $routes->connect('/ladas', ['controller' => 'Ladas'], ['_name' => 'ladas']);
+  $routes->fallbacks('DashedRoute');
 });
 
 \Cake\Core\Plugin::routes();
@@ -107,8 +113,8 @@ Turns into this
 
 ### Debugging ###
 
-If you want to debug generated routes, you can set debug parameter to true when calling ```YamlRoute\Generator::getInstance()->run(true)```.
-After that, you are able to get executed calls by calling ```YamlRoute\Generator::getInstance()->getDump()```.
+If you want to debug generated routes, you can set debug parameter to true when calling ```makallio85\YamlRoute\Generator::getInstance()->run(true)```.
+After that, you are able to get executed calls by calling ```makallio85\YamlRoute\Generator::getInstance()->getDump()```.
 
 ### toDo ###
 

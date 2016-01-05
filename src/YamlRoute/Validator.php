@@ -29,14 +29,25 @@ class Validator
         return true;
     }
 
-    private function checkRoute($name, $route)
+    /**
+     * Check route
+     *
+     * @param $name
+     * @param $route
+     *
+     * @throws \makallio85\YamlRoute\YamlRouteException
+     */
+    private static function checkRoute($name, $route)
     {
         if (!isset($route['path'])) {
             throw new YamlRouteException("Route path missing for route $name!");
         }
-        if (isset($route['routes'])) {
-            foreach ($route['routes'] as $name => $route) {
-                self::checkRoute($name, $route);
+        if (isset($route['config'])) {
+            if (isset($route['config']['routes'])) {
+
+                foreach ($route['config']['routes'] as $name => $route) {
+                    self::checkRoute($name, $route);
+                }
             }
         }
     }

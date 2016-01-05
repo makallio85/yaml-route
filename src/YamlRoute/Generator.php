@@ -26,7 +26,7 @@ class Generator
     /**
      * Instance of Generator
      *
-     * @var null
+     * @var \makallio85\YamlRoute\Generator|null
      */
     private static $_instance = null;
 
@@ -138,6 +138,14 @@ class Generator
      */
     private function _getRouteConfigs()
     {
+        $res = [];
+        foreach ($this->_routeConfigs as $key => $item) {
+            if ($item['name'] === 'Project') {
+                $res[] = $item;
+                unset($this->_routeConfigs[$key]);
+            }
+        }
+        $this->_routeConfigs = array_merge($res, $this->_routeConfigs);
         return $this->_routeConfigs;
     }
 
@@ -195,81 +203,98 @@ class Generator
 
         Router::$method(
             $path, $options, function ($routes) use ($route, $name) {
-            $exclude = ['pass', 'validate', 'routes', 'extensions', 'default_route_class'];
+            $exclude = ['pass', 'validate', 'routes', 'extensions', 'default_route_class', 'path'];
 
-            if (isset($route['config']) && isset($route['config']['controller'])) {
-                if (isset($route['config']['extensions']) && is_array($route['config']['extensions'])) {
-                    /* @var \Cake\Routing\Router $routes */
-                    $routes->extensions($route['config']['extensions']);
-                    if ($this->_debug) {
-                        $this->_addToDump("\t" . '$routes->extensions(' . $this->_arrToStr($route['config']['extensions']) . ');');
-                    }
-                }
-                $route = $this->_createPassParams($route);
-
-                $opts = [];
-                foreach ($route['config'] as $key => $item) {
-                    if (!in_array($key, $exclude)) {
-                        $opts[$key] = $item;
-                    }
-                }
-
-                $thirdParam = $this->_buildThirdParam($name, $route);
-
-                /* @var \Cake\Routing\Router $routes */
-                $routes->connect('/', $opts, $thirdParam);
-
-                // Debugging
-                if ($this->_debug) {
-                    $this->_addToDump("\t" . '$routes->connect(\'/\', ' . $this->_arrToStr($opts) . ', ' . $this->_arrToStr($thirdParam) . ');');
-                }
-            }
-            if (isset($route['config']) && isset($route['config']['routes'])) {
-                foreach ($route['config']['routes'] as $key => $x) {
-                    if (isset($x['extensions']) && is_array($x['extensions'])) {
+            if (isset($route['config'])) {
+                if (isset($route['config']['controller'])) {
+                    if (isset($route['config']['extensions']) && is_array($route['config']['extensions'])) {
                         /* @var \Cake\Routing\Router $routes */
-                        $routes->extensions($x['extensions']);
+                        $routes->extensions($route['config']['extensions']);
                         if ($this->_debug) {
-                            $this->_addToDump("\t" . '$routes->extensions(' . $this->_arrToStr($x['extensions']) . ');');
+                            $this->_addToDump("\t" . '$routes->extensions(' . $this->_arrToStr($route['config']['extensions']) . ');');
                         }
                     }
-                    $x = self::_createPassParams($x);
+                    $route = $this->_createPassParams($route);
+
                     $opts = [];
-                    foreach ($x as $k => $item) {
-                        if (!in_array($k, $exclude)) {
-                            $opts[$k] = $item;
+                    foreach ($route['config'] as $key => $item) {
+                        if (!in_array($key, $exclude)) {
+                            $opts[$key] = $item;
                         }
                     }
 
-                    $thirdParam = $this->_buildThirdParam($key, $x);
+                    $thirdParam = $this->_buildThirdParam($name, $route);
 
                     /* @var \Cake\Routing\Router $routes */
-                    $routes->connect('/' . $this->_varsToString($x['path']), $opts, $thirdParam);
+                    $routes->connect('/', $opts, $thirdParam);
 
                     // Debugging
                     if ($this->_debug) {
-                        $this->_addToDump("\t" . '$routes->connect(\'' . $this->_varsToString($x['path']) . '\', ' . $this->_arrToStr($opts) . ', ' . $this->_arrToStr($thirdParam) . ');');
+                        $this->_addToDump("\t" . '$routes->connect(\'/\', ' . $this->_arrToStr($opts) . ', ' . $this->_arrToStr($thirdParam) . ');');
+                    }
+                }
+                if (isset($route['config']['routes'])) {
+                    foreach ($route['config']['routes'] as $key => $x) {
+                        if (isset($x['config'])) {
+                            if (!is_array($x['config'])) {
+                                $x['config'] = $this->_loadRouteConfig($x['config']);
+                            }
+                            if (isset($x['config']['extensions']) && is_array($x['config']['extensions'])) {
+                                /* @var \Cake\Routing\Router $routes */
+                                $routes->extensions($x['config']['extensions']);
+                                if ($this->_debug) {
+                                    $this->_addToDump("\t" . '$routes->extensions(' . $this->_arrToStr($x['config']['extensions']) . ');');
+                                }
+                            }
+                            $x = self::_createPassParams($x);
+                            $opts = [];
+                            foreach ($x['config'] as $k => $item) {
+                                if (!in_array($k, $exclude)) {
+                                    $opts[$k] = $item;
+                                }
+                            }
+
+                            $thirdParam = $this->_buildThirdParam($key, $x);
+
+                            /* @var \Cake\Routing\Router $routes */
+                            $routes->connect('/' . $this->_varsToString($x['path']), $opts, $thirdParam);
+
+                            // Debugging
+                            if ($this->_debug) {
+                                $this->_addToDump("\t" . '$routes->connect(\'' . $this->_varsToString($x['path']) . '\', ' . $this->_arrToStr($opts) . ', ' . $this->_arrToStr($thirdParam) . ');');
+                            }
+                        }
                     }
                 }
             }
-            if (isset($route['config']) && isset($route['config']['fallbacks'])) {
-                $fallbacks = $route['config']['fallbacks'];
-            } else {
-                $fallbacks = 'DashedRoute';
-            }
-            /* @var \Cake\Routing\RouteBuilder $routes */
-            $routes->fallbacks($fallbacks);
-
-            // Debugging
-            if ($this->_debug) {
-                $this->_addToDump("\t" . '$routes->fallbacks(\'' . $fallbacks . '\');');
-            }
+            $this->_createFallbacks($routes, $route);
         }
         );
 
         // Debugging
         if ($this->_debug) {
             $this->_addToDump('});' . "\n");
+        }
+    }
+
+    /**
+     * Create Fallbacks
+     *
+     * @param $route
+     */
+    private function _createFallbacks($routes, $route)
+    {
+        if (isset($route['config']) && isset($route['config']['fallbacks'])) {
+            $fallbacks = $route['config']['fallbacks'];
+        } else {
+            $fallbacks = 'DashedRoute';
+        }
+        /* @var \Cake\Routing\RouteBuilder $routes */
+        $routes->fallbacks($fallbacks);
+
+        // Debugging
+        if ($this->_debug) {
+            $this->_addToDump("\t" . '$routes->fallbacks(\'' . $fallbacks . '\');');
         }
     }
 
@@ -281,11 +306,11 @@ class Generator
      *
      * @return array
      */
-    private static function _buildThirdParam($name, $route)
+    private function _buildThirdParam($name, $route)
     {
-        $arr = ['_name' => $name, 'pass' => $route['pass']];
-        if (isset($route['validate'])) {
-            foreach ($route['validate'] as $key => $item) {
+        $arr = ['_name' => $name, 'pass' => $route['config']['pass']];
+        if (isset($route['config']['validate'])) {
+            foreach ($route['config']['validate'] as $key => $item) {
                 $arr[$key] = $item;
             }
         }
@@ -305,13 +330,13 @@ class Generator
      *
      * @return mixed
      */
-    private static function _createPassParams($route)
+    private function _createPassParams($route)
     {
-        $route['pass'] = [];
+        $route['config']['pass'] = [];
         preg_match_all('/\{([^}]+)\}/', $route['path'], $matches);
         if (isset($matches[1])) {
             foreach ($matches[1] as $item) {
-                array_push($route['pass'], $item);
+                array_push($route['config']['pass'], $item);
             }
         }
 

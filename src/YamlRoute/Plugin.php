@@ -23,9 +23,9 @@ class Plugin
     private $_loaded = [];
 
     /**
-     * Instance pf Plugin class
+     * Instance of Plugin
      *
-     * @var null
+     * @var \makallio85\YamlRoute\Plugin|null
      */
     private static $_instance = null;
 
@@ -90,6 +90,8 @@ class Plugin
                     throw new YamlRouteException("Yaml route configuration file not found in path $path.");
                 }
                 $route = Yaml::parse(file_get_contents($path));
+                $data = ['name' => $plugin, 'route' => $route, 'file' => $path];
+                Validator::run($data);
                 $this->_addLoaded(['name' => $plugin, 'route' => $route]);
             }
         }
