@@ -23,7 +23,7 @@ class Validator
             throw new YamlRouteException('Invalid routing data in file ' . $data['file'] . '!');
         }
         foreach ($data['route'] as $name => $route) {
-            self::checkRoute($name, $route);
+            self::checkRoute($name, $route, true);
         }
 
         return true;
@@ -37,7 +37,7 @@ class Validator
      *
      * @throws \makallio85\YamlRoute\YamlRouteException
      */
-    private static function checkRoute($name, $route)
+    private static function checkRoute($name, $route, $root)
     {
         if (!isset($route['path'])) {
             throw new YamlRouteException("Route path missing for route $name!");
@@ -46,7 +46,19 @@ class Validator
             if (isset($route['config']['routes'])) {
 
                 foreach ($route['config']['routes'] as $name => $route) {
-                    self::checkRoute($name, $route);
+                    self::checkRoute($name, $route, false);
+                }
+            }
+        }
+        if (!$root && !isset($route['config'])) {
+            throw new YamlRouteException("Route $name is missing config key!");
+
+        }
+        if (!$root && isset($route['config'])) {
+            $requiredKeys = ['controller'];
+            foreach ($requiredKeys as $key) {
+                if (!array_key_exists($key, $route['config'])) {
+                    throw new YamlRouteException("Key $key is missing from route config!");
                 }
             }
         }
