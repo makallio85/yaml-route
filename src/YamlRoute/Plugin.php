@@ -67,7 +67,7 @@ class Plugin
      * @param $plugins
      * @param $options
      *
-     * @throws \makallio85\YamlRoute\YamlRouteException
+     * @throws \makallio85\YamlRoute\Exception\PluginException
      */
     public function load($plugins, $options)
     {
@@ -83,11 +83,11 @@ class Plugin
 
             foreach ($plugins as $plugin) {
                 if ($this->isLoaded($plugin)) {
-                    throw new YamlRouteException("Plugin $plugin is loaded already and should not be loaded twice.");
+                    throw new Exception\PluginException("Plugin $plugin is loaded already and should not be loaded twice.");
                 }
                 $path = Configure::read('App.paths.plugins')[0] . DS . $plugin . DS . 'config' . DS . 'routes.yml';
                 if (!file_exists($path)) {
-                    throw new YamlRouteException("Yaml route configuration file not found in path $path.");
+                    throw new Exception\PluginException("Yaml route configuration file not found in path $path.");
                 }
                 $route = Yaml::parse(file_get_contents($path));
                 $data = ['name' => $plugin, 'route' => $route, 'file' => $path];

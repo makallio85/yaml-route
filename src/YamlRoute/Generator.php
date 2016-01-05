@@ -91,7 +91,7 @@ class Generator
     /**
      * Load project routes.yml file
      *
-     * @throws \makallio85\YamlRoute\YamlRouteException
+     * @throws \makallio85\YamlRoute\Exception\ValidatorException
      */
     private function _loadProjectConfig()
     {
@@ -146,6 +146,7 @@ class Generator
             }
         }
         $this->_routeConfigs = array_merge($res, $this->_routeConfigs);
+
         return $this->_routeConfigs;
     }
 
@@ -280,6 +281,7 @@ class Generator
     /**
      * Create Fallbacks
      *
+     * @param $routes
      * @param $route
      */
     private function _createFallbacks($routes, $route)

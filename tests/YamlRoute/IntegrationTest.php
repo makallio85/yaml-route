@@ -15,7 +15,9 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     /**
      * Basic integration test
      *
-     * @throws \makallio85\YamlRoute\YamlRouteException
+     * @throws \makallio85\YamlRoute\Exception\GeneratorException
+     * @throws \makallio85\YamlRoute\Exception\ValidatorException
+     * @throws \makallio85\YamlRoute\Exception\PluginException
      */
     public function testIntegration()
     {
