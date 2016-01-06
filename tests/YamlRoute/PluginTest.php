@@ -13,11 +13,18 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException \makallio85\YamlRoute\Exception\PluginException
-     * @throws \makallio85\YamlRoute\Exception\PluginException
      */
     public function testDoubleLoad()
     {
         Plugin::getInstance()->load('PluginCars', ['bootstrap' => false, 'routes' => true]);
         Plugin::getInstance()->load('PluginCars', ['bootstrap' => false, 'routes' => true]);
+    }
+
+    /**
+     * @expectedException \makallio85\YamlRoute\Exception\PluginException
+     */
+    public function testMissingRouteFile()
+    {
+        Plugin::getInstance()->load('PluginAnimals', ['bootstrap' => false, 'routes' => true]);
     }
 }

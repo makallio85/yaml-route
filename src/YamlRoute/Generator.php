@@ -5,6 +5,7 @@ namespace makallio85\YamlRoute;
 use Cake\Core\Configure;
 use Cake\Core\Plugin as CakePlugin;
 use Cake\Routing\Router;
+use makallio85\YamlRoute\Exception\GeneratorException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -15,6 +16,7 @@ use Symfony\Component\Yaml\Yaml;
 class Generator
 {
     use ConversionTrait;
+    use FileHandlerTrait;
 
     /**
      * Route configurations
@@ -96,15 +98,19 @@ class Generator
     private function _loadProjectConfig()
     {
         if ($this->_projectFilePath === null) {
-            $this->_projectFilePath = ROOT . DS . 'config' . DS . 'routes.yml';
+            $this->setProjectFilePath(ROOT . DS . 'config' . DS . 'routes.yml');
         }
         $path = $this->_getProjectFilePath();
-        if (file_exists($path)) {
-            $route = Yaml::parse(file_get_contents($path));
-            $data = ['name' => 'Project', 'route' => $route, 'file' => $path];
-            Validator::run($data);
-            $this->_addRouteConfig($data);
+        if (!file_exists($path)) {
+            throw new GeneratorException("Project route configuration file not found in path '$path'!");
         }
+        $route = Yaml::parse(file_get_contents($path));
+        $route = $this->_loadRouteConfigs($route);
+
+        $data = ['name' => 'Project', 'route' => $route, 'file' => $path];
+        Validator::run($data);
+
+        $this->_addRouteConfig($data);
     }
 
     /**
@@ -180,9 +186,6 @@ class Generator
         $options = [];
 
         if (isset($route['config'])) {
-            if (!is_array($route['config'])) {
-                $route['config'] = self::_loadRouteConfig($route['config']);
-            }
             if (isset($route['config']['plugin']) && Plugin::getInstance()->isLoaded($route['config']['plugin'])) {
                 $method = 'plugin';
                 $path = $route['config']['plugin'];
@@ -237,9 +240,7 @@ class Generator
                 if (isset($route['config']['routes'])) {
                     foreach ($route['config']['routes'] as $key => $x) {
                         if (isset($x['config'])) {
-                            if (!is_array($x['config'])) {
-                                $x['config'] = $this->_loadRouteConfig($x['config']);
-                            }
+
                             if (isset($x['config']['extensions']) && is_array($x['config']['extensions'])) {
                                 /* @var \Cake\Routing\Router $routes */
                                 $routes->extensions($x['config']['extensions']);
@@ -401,26 +402,6 @@ class Generator
     public function getDump()
     {
         return trim($this->_dump);
-    }
-
-    /**
-     * Load route config
-     *
-     * @param $config
-     *
-     * @return array
-     */
-    private function _loadRouteConfig($config)
-    {
-        if (strpos($config, '.') !== false) {
-            list($plugin, $file) = explode('.', $config);
-            $pluginPaths = Plugin::getInstance()->getLoaded();
-            $path = $pluginPaths[$plugin] . DS . 'config' . DS . $file . '.yml';
-        } else {
-            $path = ROOT . DS . 'config' . DS . $config . '.yml';
-        }
-
-        return Yaml::parse(file_get_contents($path));
     }
 
     /**

@@ -28,5 +28,4 @@ cars:
           action: add
       ladas:
         path: /ladas
-        config:
-          controller: Ladas
+        config: 'PluginCars.ladas'

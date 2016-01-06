@@ -1,2 +1,5 @@
 root:
   path: /
+  config:
+    default_route_class: DashedRoute
+    fallbacks: DashedRoute

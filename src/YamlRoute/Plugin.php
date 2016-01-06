@@ -15,6 +15,8 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Plugin
 {
+    use FileHandlerTrait;
+
     /**
      * Array of loaded plugins
      *
@@ -32,11 +34,12 @@ class Plugin
     /**
      * Add loaded plugin
      *
+     * @param $name
      * @param $plugin
      */
-    private function _addLoaded($plugin)
+    private function _addLoaded($name, $plugin)
     {
-        $this->_loaded[] = $plugin;
+        $this->_loaded[$name] = $plugin;
     }
 
     /**
@@ -91,10 +94,17 @@ class Plugin
                 }
                 $route = Yaml::parse(file_get_contents($path));
                 $data = ['name' => $plugin, 'route' => $route, 'file' => $path];
+                $this->_addLoaded($plugin, $data);
+                $data['route'] = $this->_loadRouteConfigs($route);
                 Validator::run($data);
-                $this->_addLoaded(['name' => $plugin, 'route' => $route]);
+                $this->_updateLoaded($plugin, $data);
             }
         }
+    }
+
+    private function _updateLoaded($name, $data)
+    {
+        $this->_loaded[$name] = $data;
     }
 
     /**

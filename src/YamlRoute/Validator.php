@@ -56,7 +56,7 @@ class Validator
             }
         }
         if (!$root && !isset($route['config'])) {
-            throw new ValidatorException("Route '$name'' is missing config key!");
+            throw new ValidatorException("Route '$name' is missing config key!");
 
         }
         if (!$root && isset($route['config'])) {
