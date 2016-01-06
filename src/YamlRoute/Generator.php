@@ -197,6 +197,7 @@ class Generator
         if (isset($route['config']['default_route_class'])) {
             if (in_array($route['config']['default_route_class'], ['Route', 'InflectedRoute', 'DashedRoute'])) {
                 Router::defaultRouteClass($route['config']['default_route_class']);
+                $this->_addToDump("\\Cake\\Routing\\Router::defaultRouteClass('" . $route['config']['default_route_class'] . "');\n");
             }
         }
 
@@ -207,23 +208,29 @@ class Generator
 
         Router::$method(
             $path, $options, function ($routes) use ($route, $name, $method) {
-            $exclude = ['pass', 'validate', 'routes', 'extensions', 'default_route_class', 'path'];
+            $exclude = ['validate', 'routes', 'extensions', 'default_route_class', 'path'];
 
             if (isset($route['config'])) {
-                if (isset($route['config']['controller'])) {
-                    if (isset($route['config']['extensions']) && is_array($route['config']['extensions'])) {
-                        /* @var \Cake\Routing\Router $routes */
-                        $routes->extensions($route['config']['extensions']);
-                        if ($this->_debug) {
-                            $this->_addToDump("\t" . '$routes->extensions(' . $this->_arrToStr($route['config']['extensions']) . ');');
-                        }
+                if (isset($route['config']['extensions']) && is_array($route['config']['extensions'])) {
+                    /* @var \Cake\Routing\Router $routes */
+                    $routes->extensions($route['config']['extensions']);
+                    if ($this->_debug) {
+                        $this->_addToDump("\t" . '$routes->extensions(' . $this->_arrToStr($route['config']['extensions']) . ');');
                     }
+                }
+                if (isset($route['config']['controller'])) {
                     $route = $this->_createPassParams($route);
 
                     $opts = [];
                     foreach ($route['config'] as $key => $item) {
                         if (!in_array($key, $exclude)) {
-                            $opts[$key] = $item;
+                            if (is_array($item) && $key === 'pass') {
+                                foreach ($item as $i => $y) {
+                                    $opts[$i] = $y;
+                                }
+                            } else {
+                                $opts[$key] = $item;
+                            }
                         }
                     }
 
@@ -242,11 +249,26 @@ class Generator
                 if (isset($route['config']['routes'])) {
                     foreach ($route['config']['routes'] as $key => $x) {
                         if (isset($x['config'])) {
+
+                            if (isset($x['config']['extensions']) && is_array($x['config']['extensions'])) {
+                                /* @var \Cake\Routing\Router $routes */
+                                $routes->extensions($x['config']['extensions']);
+                                if ($this->_debug) {
+                                    $this->_addToDump("\t" . '$routes->extensions(' . $this->_arrToStr($x['config']['extensions']) . ');');
+                                }
+                            }
+
                             $x = self::_createPassParams($x);
                             $opts = [];
                             foreach ($x['config'] as $k => $item) {
                                 if (!in_array($k, $exclude)) {
-                                    $opts[$k] = $item;
+                                    if (is_array($item) && $k === 'pass') {
+                                        foreach ($item as $i => $y) {
+                                            $opts[$i] = $y;
+                                        }
+                                    } else {
+                                        $opts[$k] = $item;
+                                    }
                                 }
                             }
 
@@ -329,13 +351,20 @@ class Generator
      */
     private function _createPassParams($route)
     {
-        $route['config']['pass'] = [];
+        if (!isset($route['config']['pass'])) {
+            $route['config']['pass'] = [];
+        }
         preg_match_all('/\{([^}]+)\}/', $route['path'], $matches);
         if (isset($matches[1])) {
-            foreach ($matches[1] as $item) {
-                array_push($route['config']['pass'], $item);
+            foreach ($matches[1] as $key => $item) {
+                array_push($route['config']['pass'], $key);
             }
         }
+        $arr = [];
+        foreach ($route['config']['pass'] as $key => $item) {
+            array_push($arr, $key);
+        }
+        $route['config']['pass'] = $arr;
 
         return $route;
     }

@@ -40,11 +40,13 @@ trait FileHandlerTrait
     private function _loadRouteConfigs(&$routes)
     {
         foreach ($routes as &$route) {
-            if (!is_array($route['config'])) {
-                $route['config'] = $this->_loadRouteConfig($route['config']);
-            }
-            if (isset($route['config']['routes'])) {
-                $this->_loadRouteConfigs($route['config']['routes']);
+            if (isset($route['config'])) {
+                if (!is_array($route['config'])) {
+                    $route['config'] = $this->_loadRouteConfig($route['config']);
+                }
+                if (isset($route['config']['routes'])) {
+                    $this->_loadRouteConfigs($route['config']['routes']);
+                }
             }
         }
 

@@ -88,7 +88,7 @@ class Plugin
                 if ($this->isLoaded($plugin)) {
                     throw new Exception\PluginException("Plugin $plugin is loaded already and should not be loaded twice.");
                 }
-                $path = Configure::read('App.paths.plugins')[0] . DS . $plugin . DS . 'config' . DS . 'routes.yml';
+                $path = Configure::read('plugins')[$plugin] . 'config' . DS . 'routes.yml';
                 if (!file_exists($path)) {
                     throw new Exception\PluginException("Yaml route configuration file not found in path $path.");
                 }
