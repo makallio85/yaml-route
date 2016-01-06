@@ -9,7 +9,7 @@ use makallio85\YamlRoute\Plugin;
  *
  * @package makallio85\YamlRoute\Test
  */
-class PluginTest extends \PHPUnit_Framework_TestCase
+class PluginTest extends YamlRouteTest
 {
     /**
      * @expectedException \makallio85\YamlRoute\Exception\PluginException

@@ -21,11 +21,11 @@ class Validator
      */
     public static function run($data)
     {
-        if (count($data['route']) === 0) {
+        if (!isset($data['route']) || count($data['route']) === 0) {
             throw new ValidatorException('Invalid routing data in file \'' . $data['file'] . '\'!');
         }
         foreach ($data['route'] as $name => $route) {
-            self::checkRoute($name, $route, true);
+            self::_checkRoute($name, $route, true);
         }
 
         return true;
@@ -40,7 +40,7 @@ class Validator
      *
      * @throws \makallio85\YamlRoute\Exception\ValidatorException
      */
-    private static function checkRoute($name, $route, $root)
+    private static function _checkRoute($name, $route, $root)
     {
         if (!isset($route['path'])) {
             throw new ValidatorException("Route path missing for route '$name''!");
@@ -51,7 +51,7 @@ class Validator
             }
             if (isset($route['config']['routes'])) {
                 foreach ($route['config']['routes'] as $name => $route) {
-                    self::checkRoute($name, $route, false);
+                    self::_checkRoute($name, $route, false);
                 }
             }
         }

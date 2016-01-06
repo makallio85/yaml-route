@@ -10,7 +10,7 @@ use makallio85\YamlRoute\Generator;
  *
  * @package makallio85\YamlRoute\Test
  */
-class IntegrationTest extends \PHPUnit_Framework_TestCase
+class IntegrationTest extends YamlRouteTest
 {
     /**
      * Basic integration test
@@ -22,6 +22,11 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
     public function testIntegration()
     {
         $assert = '\Cake\Routing\Router::scope(\'/\', [], function ($routes) {' . "\n";
+        $assert .= "\t" . '$routes->fallbacks(\'DashedRoute\');' . "\n";
+        $assert .= '});' . "\n\n";
+
+        $assert .= '\Cake\Routing\Router::scope(\'/\', [], function ($routes) {' . "\n";
+        $assert .= "\t" . '$routes->connect(\'/bar\', [\'controller\' => \'Fizz\'], [\'_name\' => \'foo\']);' . "\n";
         $assert .= "\t" . '$routes->fallbacks(\'DashedRoute\');' . "\n";
         $assert .= '});' . "\n\n";
 

@@ -3,3 +3,7 @@ root:
   config:
     default_route_class: DashedRoute
     fallbacks: DashedRoute
+
+foo:
+  path: /bar
+  config: 'PluginCars.foo'

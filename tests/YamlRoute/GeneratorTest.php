@@ -9,7 +9,7 @@ use makallio85\YamlRoute\Generator;
  *
  * @package makallio85\YamlRoute\Test
  */
-class GeneratorTest extends \PHPUnit_Framework_TestCase
+class GeneratorTest extends YamlRouteTest
 {
     /**
      * @expectedException \makallio85\YamlRoute\Exception\GeneratorException

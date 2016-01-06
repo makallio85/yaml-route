@@ -206,7 +206,7 @@ class Generator
         }
 
         Router::$method(
-            $path, $options, function ($routes) use ($route, $name) {
+            $path, $options, function ($routes) use ($route, $name, $method) {
             $exclude = ['pass', 'validate', 'routes', 'extensions', 'default_route_class', 'path'];
 
             if (isset($route['config'])) {
@@ -229,25 +229,19 @@ class Generator
 
                     $thirdParam = $this->_buildThirdParam($name, $route);
 
+                    $path = $method == 'scope' ? $route['path'] : '/';
+
                     /* @var \Cake\Routing\Router $routes */
-                    $routes->connect('/', $opts, $thirdParam);
+                    $routes->connect($path, $opts, $thirdParam);
 
                     // Debugging
                     if ($this->_debug) {
-                        $this->_addToDump("\t" . '$routes->connect(\'/\', ' . $this->_arrToStr($opts) . ', ' . $this->_arrToStr($thirdParam) . ');');
+                        $this->_addToDump("\t" . '$routes->connect(\'' . $path . '\', ' . $this->_arrToStr($opts) . ', ' . $this->_arrToStr($thirdParam) . ');');
                     }
                 }
                 if (isset($route['config']['routes'])) {
                     foreach ($route['config']['routes'] as $key => $x) {
                         if (isset($x['config'])) {
-
-                            if (isset($x['config']['extensions']) && is_array($x['config']['extensions'])) {
-                                /* @var \Cake\Routing\Router $routes */
-                                $routes->extensions($x['config']['extensions']);
-                                if ($this->_debug) {
-                                    $this->_addToDump("\t" . '$routes->extensions(' . $this->_arrToStr($x['config']['extensions']) . ');');
-                                }
-                            }
                             $x = self::_createPassParams($x);
                             $opts = [];
                             foreach ($x['config'] as $k => $item) {
