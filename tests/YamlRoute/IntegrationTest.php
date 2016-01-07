@@ -21,7 +21,9 @@ class IntegrationTest extends YamlRouteTest
      */
     public function testIntegration()
     {
-        $assert = '\Cake\Routing\Router::scope(\'/\', [], function ($routes) {' . "\n";
+        $assert = '\Cake\Routing\Router::defaultRouteClass(\'DashedRoute\');' . "\n\n";
+
+        $assert .= '\Cake\Routing\Router::scope(\'/\', [], function ($routes) {' . "\n";
         $assert .= "\t" . '$routes->fallbacks(\'DashedRoute\');' . "\n";
         $assert .= '});' . "\n\n";
 

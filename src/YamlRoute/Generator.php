@@ -259,12 +259,16 @@ class Generator
                             }
 
                             $x = self::_createPassParams($x);
+
                             $opts = [];
+
                             foreach ($x['config'] as $k => $item) {
                                 if (!in_array($k, $exclude)) {
                                     if (is_array($item) && $k === 'pass') {
                                         foreach ($item as $i => $y) {
-                                            $opts[$i] = $y;
+                                            if (!is_integer($i)) {
+                                                $opts[$i] = $y;
+                                            }
                                         }
                                     } else {
                                         $opts[$k] = $item;
@@ -357,14 +361,9 @@ class Generator
         preg_match_all('/\{([^}]+)\}/', $route['path'], $matches);
         if (isset($matches[1])) {
             foreach ($matches[1] as $key => $item) {
-                array_push($route['config']['pass'], $key);
+                $route['config']['pass'][] = $item;
             }
         }
-        $arr = [];
-        foreach ($route['config']['pass'] as $key => $item) {
-            array_push($arr, $key);
-        }
-        $route['config']['pass'] = $arr;
 
         return $route;
     }
