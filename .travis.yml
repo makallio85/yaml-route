@@ -4,7 +4,7 @@ php:
   - 5.6
   - 5.5
 install:
-  - rm -rf * .*
+  - rm -rf *
   - curl -s http://getcomposer.org/installer | php
   - composer create-project cakephp/app .
   - composer require makallio85/yaml-route
