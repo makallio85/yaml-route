@@ -1,6 +1,6 @@
 language: php
 php:
-  - 7.0
+  - 5.6
 install:
   - rm -rf ..?* .[!.]* *
   - cd ..
@@ -11,9 +11,9 @@ install:
   - composer require phpunit/phpunit
   - composer require satooshi/php-coveralls
   - composer require makallio85/yaml-route
-  - cp vendor/makallio85/yaml-route/config/routes.php config/routes.php
-  - cp vendor/makallio85/yaml-route/config/routes.yml config/routes.yml
-  - cp -Rf vendor/makallio85/yaml-route/plugins plugins
+  - cp vendor/makallio85/yaml-route/tests/config/routes.php config/routes.php
+  - cp vendor/makallio85/yaml-route/tests/config/routes.yml config/routes.yml
+  - cp -Rf vendor/makallio85/yaml-route/tests/plugins plugins
 script:
   - mkdir -p build/logs
   - php vendor/bin/phpunit -c vendor/makallio85/yaml-route/phpunit.xml.dist
