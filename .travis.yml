@@ -4,13 +4,12 @@ php:
   - 5.6
   - 5.5
 install:
-  - rm -rf *
+  - rm -f ..?* .[!.]* *
   - curl -s http://getcomposer.org/installer | php
+  - composer self-update
   - composer create-project cakephp/app .
   - composer require makallio85/yaml-route
   - php composer.phar install --dev --no-interaction
-before_script:
-  - composer self-update
 script:
   - mkdir -p build/logs
   - php vendor/bin/phpunit -c phpunit.xml.dist
