@@ -13,8 +13,6 @@ install:
   - composer require makallio85/yaml-route "dev-master"
   - cp vendor/makallio85/yaml-route/tests/config/routes.yml config/routes.yml
   - cp -Rf vendor/makallio85/yaml-route/tests/plugins/* plugins/
-  - cd plugins
-  - ls -al
 script:
   - mkdir -p build/logs
   - php vendor/bin/phpunit -c vendor/makallio85/yaml-route/phpunit.xml.dist
