@@ -11,7 +11,6 @@ install:
   - composer require phpunit/phpunit
   - composer require satooshi/php-coveralls
   - composer require makallio85/yaml-route "dev-master"
-  - cp vendor/makallio85/yaml-route/tests/config/routes.php config/routes.php
   - cp vendor/makallio85/yaml-route/tests/config/routes.yml config/routes.yml
   - cp -Rf vendor/makallio85/yaml-route/tests/plugins plugins
 script:
