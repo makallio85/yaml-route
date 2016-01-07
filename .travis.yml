@@ -5,10 +5,11 @@ php:
   - 5.5
 install:
   - rm -rf ..?* .[!.]* *
-  - ls -al
+  - cd ..
   - curl -s http://getcomposer.org/installer | php
   - composer self-update
-  - composer create-project cakephp/app .
+  - composer create-project cakephp/app app
+  - cd app
   - composer require makallio85/yaml-route
   - php composer.phar install --dev --no-interaction
 script:
