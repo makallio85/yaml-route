@@ -10,7 +10,7 @@ install:
   - cd app
   - composer require phpunit/phpunit
   - composer require satooshi/php-coveralls
-  - composer require makallio85/yaml-route
+  - composer require makallio85/yaml-route "dev-master"
   - ls -al
   - cd vendor
   - ls -al
