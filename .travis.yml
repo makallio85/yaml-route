@@ -4,7 +4,7 @@ php:
   - 5.6
   - 5.5
 install:
-  - rm -f ..?* .[!.]* *
+  - rm -rf ..?* .[!.]* *
   - curl -s http://getcomposer.org/installer | php
   - composer self-update
   - composer create-project cakephp/app .
