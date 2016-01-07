@@ -8,7 +8,12 @@ install:
   - composer self-update
   - composer create-project cakephp/app app
   - cd app
+  - composer require phpunit/phpunit
+  - composer require satooshi/php-coveralls
   - composer require makallio85/yaml-route
+  - cp vendor/makallio85/yaml-route/config/routes.php config/routes.php
+  - cp vendor/makallio85/yaml-route/config/routes.yml config/routes.yml
+  - cp -Rf vendor/makallio85/yaml-route/plugins plugins
 script:
   - mkdir -p build/logs
   - php vendor/bin/phpunit -c vendor/makallio85/yaml-route/phpunit.xml.dist
