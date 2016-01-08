@@ -15,8 +15,7 @@
   },
   "autoload": {
     "psr-4": {
-      "makallio85\\YamlRoute\\": "src/YamlRoute/",
-      "makallio85\\YamlRoute\\Exception\\": "src/YamlRoute/Exception"
+      "makallio85\\YamlRoute\\": "src/YamlRoute/"
     }
   },
   "autoload-dev": {
