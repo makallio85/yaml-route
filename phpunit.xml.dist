@@ -8,7 +8,7 @@
         >
     <testsuites>
         <testsuite name="yaml-route testsuite">
-            <directory>./tests</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
     <logging>

@@ -4,10 +4,11 @@ php:
 install:
   - rm -rf ..?* .[!.]* *
   - cd ..
+  - git clone https://github.com/cakephp/app yaml-route-test
+  - cd yaml-route-test
   - curl -s http://getcomposer.org/installer | php
   - composer self-update
-  - composer create-project cakephp/app yaml-route-test
-  - cd yaml-route-test
+  - composer install
   - composer require phpunit/phpunit
   - composer require satooshi/php-coveralls
   - composer require makallio85/yaml-route "dev-master"
