@@ -12,6 +12,8 @@ cars:
         path: /bmws
         config:
           controller: Bmws
+          pass:
+            foo: bar
       bmws_view:
         path: /bmws/{id}
         config:

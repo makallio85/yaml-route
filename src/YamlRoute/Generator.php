@@ -219,7 +219,6 @@ class Generator
                     }
                 }
                 if (isset($route['config']['controller'])) {
-                    $route = $this->_createPassParams($route);
 
                     $opts = [];
                     foreach ($route['config'] as $key => $item) {
@@ -233,6 +232,8 @@ class Generator
                             }
                         }
                     }
+
+                    $route = $this->_createPassParams($route);
 
                     $thirdParam = $this->_buildThirdParam($name, $route);
 
@@ -258,23 +259,21 @@ class Generator
                                 }
                             }
 
-                            $x = self::_createPassParams($x);
-
                             $opts = [];
 
                             foreach ($x['config'] as $k => $item) {
                                 if (!in_array($k, $exclude)) {
                                     if (is_array($item) && $k === 'pass') {
                                         foreach ($item as $i => $y) {
-                                            if (!is_integer($i)) {
-                                                $opts[$i] = $y;
-                                            }
+                                            $opts[$i] = $y;
                                         }
                                     } else {
                                         $opts[$k] = $item;
                                     }
                                 }
                             }
+
+                            $x = self::_createPassParams($x);
 
                             $thirdParam = $this->_buildThirdParam($key, $x);
 
@@ -361,9 +360,14 @@ class Generator
         preg_match_all('/\{([^}]+)\}/', $route['path'], $matches);
         if (isset($matches[1])) {
             foreach ($matches[1] as $key => $item) {
-                $route['config']['pass'][] = $item;
+                $route['config']['pass'][$item] = $item;
             }
         }
+        $arr = [];
+        foreach ($route['config']['pass'] as $key => $item) {
+            $arr[] = $key;
+        }
+        $route['config']['pass'] = $arr;
 
         return $route;
     }

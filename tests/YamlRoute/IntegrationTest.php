@@ -30,7 +30,7 @@ class IntegrationTest extends YamlRouteTest
         $assert .= '\Cake\Routing\Router::plugin(\'PluginCars\', [\'path\' => \'/cars\'], function ($routes) {' . "\n";
         $assert .= "\t" . '$routes->extensions([\'0\' => \'json\', \'1\' => \'xml\']);' . "\n";
         $assert .= "\t" . '$routes->connect(\'/\', [\'plugin\' => \'PluginCars\', \'controller\' => \'Cars\', \'action\' => \'index\'], [\'_name\' => \'cars\']);' . "\n";
-        $assert .= "\t" . '$routes->connect(\'/bmws\', [\'controller\' => \'Bmws\'], [\'_name\' => \'bmws_list\']);' . "\n";
+        $assert .= "\t" . '$routes->connect(\'/bmws\', [\'controller\' => \'Bmws\', \'foo\' => \'bar\'], [\'_name\' => \'bmws_list\', \'pass\' => [\'0\' => \'foo\']]);' . "\n";
         $assert .= "\t" . '$routes->connect(\'/bmws/:id\', [\'_method\' => \'GET\', \'controller\' => \'Bmws\', \'action\' => \'view\'], [\'_name\' => \'bmws_view\', \'pass\' => [\'0\' => \'id\'], \'id\' => \'[0-9]+\']);' . "\n";
         $assert .= "\t" . '$routes->connect(\'/bmws/add\', [\'_method\' => \'POST\', \'controller\' => \'Bmws\', \'action\' => \'add\'], [\'_name\' => \'bmws_add\']);' . "\n";
         $assert .= "\t" . '$routes->connect(\'/ladas\', [\'controller\' => \'Ladas\'], [\'_name\' => \'ladas\']);' . "\n";
