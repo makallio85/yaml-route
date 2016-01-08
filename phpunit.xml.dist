@@ -7,7 +7,7 @@
         convertWarningsToExceptions="true"
         >
     <testsuites>
-        <testsuite name="cake-yaml testsuite">
+        <testsuite name="yaml-route testsuite">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
