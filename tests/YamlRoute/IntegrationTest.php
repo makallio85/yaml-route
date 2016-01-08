@@ -27,11 +27,6 @@ class IntegrationTest extends YamlRouteTest
         $assert .= "\t" . '$routes->fallbacks(\'DashedRoute\');' . "\n";
         $assert .= '});' . "\n\n";
 
-        $assert .= '\Cake\Routing\Router::scope(\'/\', [], function ($routes) {' . "\n";
-        $assert .= "\t" . '$routes->connect(\'/bar\', [\'controller\' => \'Fizz\'], [\'_name\' => \'foo\']);' . "\n";
-        $assert .= "\t" . '$routes->fallbacks(\'DashedRoute\');' . "\n";
-        $assert .= '});' . "\n\n";
-
         $assert .= '\Cake\Routing\Router::plugin(\'PluginCars\', [\'path\' => \'/cars\'], function ($routes) {' . "\n";
         $assert .= "\t" . '$routes->extensions([\'0\' => \'json\', \'1\' => \'xml\']);' . "\n";
         $assert .= "\t" . '$routes->connect(\'/\', [\'plugin\' => \'PluginCars\', \'controller\' => \'Cars\', \'action\' => \'index\'], [\'_name\' => \'cars\']);' . "\n";
@@ -45,7 +40,7 @@ class IntegrationTest extends YamlRouteTest
         $assert .= '\Cake\Core\Plugin::routes();';
 
         Plugin::getInstance()->load('PluginCars', ['bootstrap' => false, 'routes' => true]);
-        Generator::getInstance()->setProjectFilePath(ROOT . DS . 'tests' . DS . 'config' . DS . 'routes.yml')->run(true);
+        Generator::getInstance()->run(true);
 
         $res = Generator::getInstance()->getDump();
         $this->assertEquals($assert, $res);

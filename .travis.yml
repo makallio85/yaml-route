@@ -6,8 +6,8 @@ install:
   - cd ..
   - curl -s http://getcomposer.org/installer | php
   - composer self-update
-  - composer create-project cakephp/app app
-  - cd app
+  - composer create-project cakephp/app yaml-route-test
+  - cd yaml-route-test
   - composer require phpunit/phpunit
   - composer require satooshi/php-coveralls
   - composer require makallio85/yaml-route "dev-master"

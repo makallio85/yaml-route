@@ -11,8 +11,3 @@ require_once dirname(dirname(dirname(dirname(dirname(__FILE__))))) . DS . 'confi
         'PluginAnimals' => dirname(dirname(dirname(dirname(dirname(__FILE__))))) . DS . 'plugins' . DS . 'PluginAnimals',
     ]]
 );
-
-makallio85\YamlRoute\Plugin::getInstance()->load('PluginCars', ['route' => true, 'bootstrap' => false]);
-makallio85\YamlRoute\Plugin::getInstance()->load('PluginAnimals', ['route' => true, 'bootstrap' => false]);
-
-makallio85\YamlRoute\Generator::getInstance()->run();
