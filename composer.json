@@ -6,7 +6,7 @@
   "require": {
     "php": ">=5.4.16",
     "cakephp/cakephp": ">=3.0.0",
-    "symfony/yaml": ">=3.0",
+    "symfony/yaml": "~2.6",
     "cakephp/plugin-installer": "*"
   },
   "require-dev": {
