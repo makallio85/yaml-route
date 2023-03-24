@@ -2,7 +2,7 @@
   "name": "makallio85/yaml-route",
   "description": "Configure routes with simple YAML files",
   "license": "MIT",
-  "type": "library",
+  "type": "cakephp-plugin",
   "require": {
     "php": ">=5.4.16",
     "cakephp/cakephp": ">=3.0.0",
@@ -20,8 +20,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "makallio85\\YamlRoute\\Test\\": "tests/YamlRoute"
+      "makallio85\\YamlRoute\\Test\\": "tests/YamlRoute/"
     }
-  },
-  "minimum-stability": "dev"
+  }
 }
